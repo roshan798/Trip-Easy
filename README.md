@@ -5,7 +5,7 @@
 Before getting started, make sure you have the following:
 
 - Node.js v20 installed. You can download it from [Node.js](https://nodejs.org).
-- MongoDB installed and running locally. Create a database and copy the connection string into the `.env` file.
+- MongoDB installed and running locally. Create a database named Trip-planer.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Before getting started, make sure you have the following:
 2. Change into the project directory:
 
     ```bash
-    cd MERN-Travel-Tourism-App
+    cd Trip-Easy
     ```
 
 3. Install the dependencies for the server:
@@ -30,7 +30,7 @@ Before getting started, make sure you have the following:
 4. Copy the `.env.example` file to `.env` in the MERN folder:
 
     ```bash
-    cp MERN/.env.example MERN/.env
+    cp .env.example .env
     ```
 
 5. Change into the client directory:
@@ -54,3 +54,5 @@ Before getting started, make sure you have the following:
     This will start the client and backend server simultaneously.
 
 8. Open your browser and visit [http://localhost:5173](http://localhost:5173) to see the app in action.
+
+9. [C link this](https://www.appypie.com/faqs/how-to-get-public-key-private-key-and-merchant-id-from-braintree) to know how to get the braintree key
