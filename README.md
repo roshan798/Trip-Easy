@@ -1,4 +1,4 @@
-# MERN Travel Tourism App
+# Trip Easy
 
 ## Prerequisites
 
