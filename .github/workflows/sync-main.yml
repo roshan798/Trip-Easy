@@ -1,51 +1,70 @@
-name: Sync main to branches
+name: Sync Branches with Main
 
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches: [main]
+    
+permissions: 
+  contents: write
 
 jobs:
-    create-pull-requests:
-        runs-on: ubuntu-latest
-        permissions:
-            contents: write
-            pull-requests: write
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v2
+      - name: Setup Git User
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "your-email@example.com"
 
-            - name: Set up Git
-              run: |
-                  git config --global user.name 'GitHub Action'
-                  git config --global user.email 'action@github.com'
+      - name: Update roshan
+        run: |
+          git checkout main
+          git fetch origin
+          git checkout roshan
+          git pull origin roshan
+          git merge origin/main
+          git push origin roshan
 
-            - name: Fetch all branches
-              run: git fetch --all
+      - name: Update aman
+        run: |
+          git checkout main
+          git fetch origin
+          git checkout aman
+          git pull origin aman
+          git merge origin/main
+          git push origin aman
 
-            - name: List branches
-              id: list-branches
-              run: |
-                  git branch -r | grep -v '\->' | grep -v 'main' | awk '{print $1}' | sed 's/origin\///' > branches.txt
-                  echo "::set-output name=branches::$(cat branches.txt | tr '\n' ' ')"
+      - name: Update rahul
+        run: |
+          git checkout main
+          git fetch origin
+          git checkout rahul
+          git pull origin rahul
+          git merge origin/main
+          git push origin rahul
 
-            - name: Create pull requests
-              run: |
-                  branches=$(echo "${{ steps.list-branches.outputs.branches }}" | tr ' ' '\n')
-                  for branch in $branches; do
-                    git checkout main
-                    git pull origin main
-                    git checkout -b sync/main-to-$branch
-                    git pull origin $branch || true
-                    git merge main --no-commit --no-ff
-                    if [[ `git status --porcelain` ]]; then
-                      git commit -m 'Sync from main'
-                      git push origin sync/main-to-$branch
-                      gh pr create --title "Sync main to $branch" --body "This PR syncs changes from main to the $branch branch." --head sync/main-to-$branch --base $branch
-                    else
-                      echo "No changes to commit for branch $branch"
-                    fi
-                  done
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update saurav
+        run: |
+          git checkout main
+          git fetch origin
+          git checkout saurav
+          git pull origin saurav
+          git merge origin/main
+          git push origin saurav
+
+      - name: Update monazir
+        run: |
+          git checkout main
+          git fetch origin
+          git checkout monazir
+          git pull origin monazir
+          git merge origin/main
+          git push origin monazir
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
