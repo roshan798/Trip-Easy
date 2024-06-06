@@ -1,0 +1,49 @@
+name: Format Code
+
+on:
+    push:
+        branches:
+            - main # or specify the branch you want to target
+
+jobs:
+    format:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v2
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '20'
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Run format
+              run: npm run format
+
+            - name: Check for changes
+              id: git-status
+              run: |
+                  git config --global user.name 'roshan798'
+                  git config --global user.email 'rsahu7989@gmail.com'
+                  if [[ `git status --porcelain` ]]; then
+                    echo "changes=true" >> $GITHUB_ENV
+                  else
+                    echo "changes=false" >> $GITHUB_ENV
+                  fi
+
+            - name: Commit changes
+              if: env.changes == 'true'
+              run: |
+                  git add .
+                  git commit -m 'Format code with Prettier'
+
+            - name: Push changes
+              if: env.changes == 'true'
+              uses: ad-m/github-push-action@v0.6.0
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  branch: main
