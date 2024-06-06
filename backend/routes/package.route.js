@@ -1,33 +1,33 @@
-import express from "express";
-import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
+import express from 'express'
+import { isAdmin, requireSignIn } from '../middlewares/authMiddleware.js'
 import {
-  braintreeTokenController,
-  createPackage,
-  deletePackage,
-  getPackageData,
-  getPackages,
-  updatePackage,
-} from "../controllers/package.controller.js";
+    braintreeTokenController,
+    createPackage,
+    deletePackage,
+    getPackageData,
+    getPackages,
+    updatePackage,
+} from '../controllers/package.controller.js'
 
-const router = express.Router();
+const router = express.Router()
 
 //create package
-router.post("/create-package", requireSignIn, isAdmin, createPackage);
+router.post('/create-package', requireSignIn, isAdmin, createPackage)
 
 //update package by id
-router.post("/update-package/:id", requireSignIn, isAdmin, updatePackage);
+router.post('/update-package/:id', requireSignIn, isAdmin, updatePackage)
 
 //delete package by id
-router.delete("/delete-package/:id", requireSignIn, isAdmin, deletePackage);
+router.delete('/delete-package/:id', requireSignIn, isAdmin, deletePackage)
 
 //get all packages
-router.get("/get-packages", getPackages);
+router.get('/get-packages', getPackages)
 
 //get single package data by id
-router.get("/get-package-data/:id", getPackageData);
+router.get('/get-package-data/:id', getPackageData)
 
 //payments routes
 //token
-router.get("/braintree/token", braintreeTokenController);
+router.get('/braintree/token', braintreeTokenController)
 
-export default router;
+export default router
