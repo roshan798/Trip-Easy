@@ -1,0 +1,45 @@
+name: Sync main to branches
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    create-pull-requests:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            pull-requests: write
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v2
+
+            - name: Set up Git
+              run: |
+                  git config --global user.name 'GitHub Action'
+                  git config --global user.email 'action@github.com'
+
+            - name: Fetch all branches
+              run: git fetch --all
+
+            - name: List branches
+              id: list-branches
+              run: |
+                  git branch -r | grep -v '\->' | grep -v 'main' | awk '{print $1}' | sed 's/origin\///' > branches.txt
+                  cat branches.txt
+
+            - name: Create pull requests
+              uses: peter-evans/create-pull-request@v4
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  commit-message: 'Sync from main'
+                  committer: GitHub <action@github.com>
+                  author: GitHub <action@github.com>
+                  branch: sync/main-to-branches
+                  delete-branch: true
+                  title: 'Sync main to branches'
+                  body: 'This PR syncs changes from main to the following branches.'
+                  branch-name: ${{ github.actor }}-sync-main-to-branches
+                  base-branch: ${{ steps.list-branches.outputs.branches }}
