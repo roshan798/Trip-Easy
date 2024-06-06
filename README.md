@@ -4,8 +4,8 @@
 
 Before getting started, make sure you have the following:
 
-- Node.js v20 installed. You can download it from [Node.js](https://nodejs.org).
-- MongoDB installed and running locally. Create a database named Trip-planer.
+-   Node.js v20 installed. You can download it from [Node.js](https://nodejs.org).
+-   MongoDB installed and running locally. Create a database named Trip-planer.
 
 ## Installation
 
