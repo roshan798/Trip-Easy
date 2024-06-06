@@ -28,18 +28,24 @@ jobs:
               id: list-branches
               run: |
                   git branch -r | grep -v '\->' | grep -v 'main' | awk '{print $1}' | sed 's/origin\///' > branches.txt
-                  cat branches.txt
+                  echo "::set-output name=branches::$(cat branches.txt | tr '\n' ' ')"
 
             - name: Create pull requests
-              uses: peter-evans/create-pull-request@v4
-              with:
-                  token: ${{ secrets.GITHUB_TOKEN }}
-                  commit-message: 'Sync from main'
-                  committer: GitHub <action@github.com>
-                  author: GitHub <action@github.com>
-                  branch: sync/main-to-branches
-                  delete-branch: true
-                  title: 'Sync main to branches'
-                  body: 'This PR syncs changes from main to the following branches.'
-                  branch-name: ${{ github.actor }}-sync-main-to-branches
-                  base-branch: ${{ steps.list-branches.outputs.branches }}
+              run: |
+                  branches=$(echo "${{ steps.list-branches.outputs.branches }}" | tr ' ' '\n')
+                  for branch in $branches; do
+                    git checkout main
+                    git pull origin main
+                    git checkout -b sync/main-to-$branch
+                    git pull origin $branch || true
+                    git merge main --no-commit --no-ff
+                    if [[ `git status --porcelain` ]]; then
+                      git commit -m 'Sync from main'
+                      git push origin sync/main-to-$branch
+                      gh pr create --title "Sync main to $branch" --body "This PR syncs changes from main to the $branch branch." --head sync/main-to-$branch --base $branch
+                    else
+                      echo "No changes to commit for branch $branch"
+                    fi
+                  done
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
