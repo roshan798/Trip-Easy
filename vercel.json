@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "name": "Trip Easy",
+    "builds": [
+        {
+            "src": "./backend/index.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/"
+        }
+    ]
+}
