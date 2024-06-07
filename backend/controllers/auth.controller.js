@@ -11,7 +11,7 @@ export const test = (req, res) => {
 export const signupController = async (req, res) => {
     try {
         const { username, email, password, address, phone } = req.body
-
+        // console.log(username, email, password, address, phone);
         if (!username || !email || !password || !address || !phone) {
             return res.status(200).send({
                 success: false,
