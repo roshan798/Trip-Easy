@@ -30,9 +30,9 @@ app.use('/api/rating', ratingRoute)
 app.use('/api/booking', bookingRoute)
 
 // //rest api
-app.use("/", (req, res) => {
-    res.send("Welcome to travel and tourism app");
-});
+app.use('/', (req, res) => {
+    res.send('Welcome to travel and tourism app')
+})
 
 //static files
 app.use(express.static(path.join(__dirname, '/client/dist')))
