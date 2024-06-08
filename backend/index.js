@@ -31,7 +31,6 @@ app.use('/api/booking', bookingRoute)
 
 // //rest api
 
-
 //static files
 app.use(express.static(path.join(__dirname, '../client/dist')))
 
