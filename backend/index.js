@@ -37,11 +37,11 @@ app.use('/api/rating', ratingRoute)
 app.use('/api/booking', bookingRoute)
 
 //static files
-app.use(express.static(path.join(__dirname, '../client/dist')))
+app.use(express.static(path.join(__dirname, 'public')))
 
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
-// })
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
 
 //port
 app.listen(process.env.PORT, () => {

@@ -12,4 +12,7 @@ export default defineConfig({
     },
   },
   plugins: [react()],
+  build: {
+    outDir: '../backend/public', // Replace with your desired output directory
+  },
 });
