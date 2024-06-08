@@ -19,10 +19,14 @@ jobs:
                   node-version: '20'
 
             - name: Install dependencies
-              run: npm install
+              run: |
+                  cd backend
+                  npm install
 
             - name: Run format
-              run: npm run format
+              run: |
+                  cd backend
+                  npm run format
 
             - name: Check for changes
               id: git-status
