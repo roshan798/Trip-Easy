@@ -3,7 +3,7 @@
     "name": "Trip-Easy",
     "builds": [
         {
-            "src": "./index.js",
+            "src": "./package.json",
             "use": "@vercel/node"
         }
     ],
