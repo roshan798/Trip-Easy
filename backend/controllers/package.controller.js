@@ -97,7 +97,6 @@ export const getPackages = async (req, res) => {
         const sort = req.query.sort || 'createdAt'
 
         const order = req.query.order || 'desc'
-
         const packages = await Package.find({
             $or: [
                 { packageName: { $regex: searchTerm, $options: 'i' } },

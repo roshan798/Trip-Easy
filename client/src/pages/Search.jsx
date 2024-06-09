@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PackageCard from "./PackageCard";
-import { getAllPackages } from "../http";
+import { getPackages } from "../http";
 
 const Search = () => {
     const navigate = useNavigate();
@@ -37,7 +37,7 @@ const Search = () => {
             setShowMoreBtn(false);
             try {
                 const searchQuery = urlParams.toString();
-                const { data } = await getAllPackages({searchQuery});
+                const { data } = await getPackages({searchQuery});
                 setLoading(false);
                 setAllPackages(data?.packages);
                 if (data?.packages?.length > 8) {
