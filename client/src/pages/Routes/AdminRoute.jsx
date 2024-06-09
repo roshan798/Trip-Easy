@@ -10,6 +10,7 @@ export default function AdminRoute() {
 
     const authCheck = async () => {
         const { data } = await loginAdmin();
+        console.log("admin login ", data);
         if (data.check) setOk(true);
         else setOk(false);
     };
