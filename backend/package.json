@@ -17,9 +17,7 @@
     "scripts": {
         "dev": "nodemon index.js",
         "start": "node index.js",
-        "format": "npx prettier --write ../",
-        "build": "npm install && npm install --prefix ../client && npm run build --prefix ../client",
-        "vercel-build": "npm run build"
+        "format": "npx prettier --write ../"
     },
     "keywords": [],
     "author": "",
