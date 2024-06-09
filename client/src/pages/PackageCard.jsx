@@ -1,5 +1,4 @@
 import { Rating } from "@mui/material";
-import React, { useEffect, useState } from "react";
 import { FaClock } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
