@@ -4,12 +4,11 @@ import bcryptjs from 'bcryptjs'
 //update uset details
 export const updateUser = async (req, res) => {
     if (req.user.id !== req.params.id) {
-        return res.status(401).send({
+        return res.status(401).json({
             success: false,
-            message: 'You can only update your own account please login again!',
+            message: 'Invalid request!',
         })
     }
-    //   console.log(req.body.phone);
 
     try {
         const updatedUser = await User.findByIdAndUpdate(
@@ -27,14 +26,14 @@ export const updateUser = async (req, res) => {
 
         const { password: pass, ...rest } = updatedUser._doc
 
-        res.status(201).send({
+        res.status(201).json({
             success: true,
             message: 'User Details Updated Successfully',
             user: rest,
         })
     } catch (error) {
         if (error.code === 11000) {
-            res.status(200).send({
+            res.status(200).json({
                 success: true,
                 message: 'email already taken please login!',
             })
@@ -46,10 +45,10 @@ export const updateUser = async (req, res) => {
 export const updateProfilePhoto = async (req, res) => {
     try {
         if (req.user.id !== req.params.id) {
-            return res.status(401).send({
+            return res.status(401).json({
                 success: false,
                 message:
-                    'You can only update your own account profile photo please login again!',
+                    'Invalid Request!',
             })
         }
 
@@ -67,13 +66,13 @@ export const updateProfilePhoto = async (req, res) => {
         const { password: pass, ...rest } = validUser._doc
 
         if (updatedProfilePhoto) {
-            return res.status(201).send({
+            return res.status(201).json({
                 success: true,
                 message: 'Profile photo updated',
                 user: rest,
             })
         } else {
-            return res.status(500).send({
+            return res.status(500).json({
                 success: false,
                 message: 'Something went wrong',
             })
@@ -87,7 +86,7 @@ export const updateProfilePhoto = async (req, res) => {
 export const updateUserPassword = async (req, res) => {
     try {
         if (req.user.id !== req.params.id) {
-            return res.status(401).send({
+            return res.status(401).json({
                 success: false,
                 message:
                     'You can only update your own account password please login again!',
@@ -97,7 +96,7 @@ export const updateUserPassword = async (req, res) => {
         const validUser = await User.findById(req.params.id)
 
         if (!validUser) {
-            return res.status(404).send({
+            return res.status(404).json({
                 success: false,
                 message: 'User Not Found!',
             })
@@ -111,7 +110,7 @@ export const updateUserPassword = async (req, res) => {
             validUser.password
         )
         if (!validPassword) {
-            return res.status(200).send({
+            return res.status(200).json({
                 success: false,
                 message: 'Invalid password',
             })
@@ -128,7 +127,7 @@ export const updateUserPassword = async (req, res) => {
             { new: true }
         )
 
-        return res.status(201).send({
+        return res.status(201).json({
             success: true,
             message: 'Password Updated Successfully',
         })
@@ -140,14 +139,14 @@ export const updateUserPassword = async (req, res) => {
 //delete user
 export const deleteUserAccount = async (req, res, next) => {
     if (req.user.id !== req.params.id)
-        return res.status(401).send({
+        return res.status(401).json({
             success: false,
             message: 'You can only delete your account!',
         })
     try {
         await User.findByIdAndDelete(req.params.id)
-        res.clearCookie('access_token') //clear cookie before sending json
-        res.status(200).send({
+        res.clearCookie('access_token') //clear cookie before jsoning json
+        res.status(200).json({
             success: true,
             message: 'User account has been deleted!',
         })
@@ -169,9 +168,9 @@ export const getAllUsers = async (req, res) => {
             ],
         })
         if (users && users.length > 0) {
-            res.send(users)
+            res.json(users)
         } else {
-            res.status(200).send({
+            res.status(200).json({
                 success: false,
                 message: 'No Users Yet!',
             })
@@ -185,7 +184,7 @@ export const getAllUsers = async (req, res) => {
 export const deleteUserAccountAdmin = async (req, res, next) => {
     try {
         await User.findByIdAndDelete(req?.params?.id)
-        res.status(200).send({
+        res.status(200).json({
             success: true,
             message: 'User account has been deleted!',
         })

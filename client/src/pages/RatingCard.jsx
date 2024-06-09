@@ -1,5 +1,4 @@
 import { Rating } from "@mui/material";
-import React from "react";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 
 const RatingCard = ({ packageRatings }) => {

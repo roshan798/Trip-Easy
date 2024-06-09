@@ -1,22 +1,15 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import { loginUser } from "../../http";
 
 export default function PrivateRoute() {
   const { currentUser } = useSelector((state) => state.user);
   const [ok, setOk] = useState(false);
 
   const authCheck = async () => {
-    const res = await fetch("/api/user/user-auth", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    const data = await res.json();
+    const {data} = await loginUser();
     if (data.check) setOk(true);
     else setOk(false);
   };
