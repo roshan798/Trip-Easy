@@ -1,6 +1,5 @@
 {
     "version": 2,
-    "name": "Trip-Easy",
     "builds": [
         {
             "src": "./index.js",
@@ -12,6 +11,5 @@
             "src": "/(.*)",
             "dest": "/"
         }
-    ],
-    "buildCommand": "npm run build"
+    ]
 }
