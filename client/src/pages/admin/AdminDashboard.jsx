@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -45,6 +45,7 @@ const AdminDashboard = () => {
         phone: "",
         avatar: "",
     });
+    console.log(currentUser);
 
     useEffect(() => {
         if (currentUser !== null) {
@@ -59,6 +60,7 @@ const AdminDashboard = () => {
     }, [currentUser]);
 
     const handleProfilePhoto = (photo) => {
+        console.log("admin started photo process")
         try {
             dispatch(updateUserStart());
             const storage = getStorage(app);
@@ -83,7 +85,7 @@ const AdminDashboard = () => {
                     getDownloadURL(uploadTask.snapshot.ref).then(
                         async (downloadUrl) => {
                             const { data } = await updateProfilePicture({
-                                id: currentUser._id,
+                                userId: currentUser._id,
                                 formData: {
                                     avatar: downloadUrl,
                                 },
@@ -107,6 +109,7 @@ const AdminDashboard = () => {
                 }
             );
         } catch (error) {
+            console.error("error", error.message);
             console.log(error);
         }
     };

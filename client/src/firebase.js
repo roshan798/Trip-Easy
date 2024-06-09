@@ -4,14 +4,13 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-//temporary souls firebase
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: "mern-travel-tourism.firebaseapp.com",
-  projectId: "mern-travel-tourism",
-  storageBucket: "mern-travel-tourism.appspot.com",
-  messagingSenderId: "304378877141",
-  appId: "1:304378877141:web:3bddab2778ca23186f7e5c",
+  apiKey: import.meta.VITE_FIREBASE_API_KEY,
+  authDomain: "trip-easy-c69e6.firebaseapp.com",
+  projectId: "trip-easy-c69e6",
+  storageBucket: "trip-easy-c69e6.appspot.com",
+  messagingSenderId: "929091329613",
+  appId: "1:929091329613:web:912f84ee48249993dc4604"
 };
 
 // Initialize Firebase

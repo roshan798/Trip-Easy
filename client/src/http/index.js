@@ -33,10 +33,13 @@ export const deleteUser = async (userId) => {
 }
 export const updateProfilePicture = async (data) => {
     const { userId, formData } = data;
+    console.log("user profile photo", data);
     return api.post(`/api/user/update-profile-photo/${userId}`, formData)
 }
+
 export const updateAdmin = async (data) => {
     const { userId, formData } = data;
+    console.log(data);
     return api.post(`/api/user/update/${userId}`, formData)
 }
 export const updateAdminPassword = async (data) => {
@@ -64,7 +67,10 @@ export const getPackages = (queryParams) => {
 export const createPackage = async (formData) => {
     return await api.post('/api/package/create-package', formData);
 }
-
+export const updatePackage = async (data) => {
+    const { packageId, formData } = data;
+    return api.post(`/api/package/update-package/${packageId}`, formData)
+}
 //rating routes
 export const getRatings = async (id, someParam) => {
     const res = await api.get(`/api/rating/get-ratings/${id}/${someParam}`);
