@@ -46,7 +46,6 @@ const AdminDashboard = () => {
         phone: "",
         avatar: "",
     });
-    console.log(currentUser);
 
     useEffect(() => {
         if (currentUser !== null) {
@@ -61,7 +60,6 @@ const AdminDashboard = () => {
     }, [currentUser]);
 
     const handleProfilePhoto = (photo) => {
-        console.log("admin started photo process")
         try {
             dispatch(updateUserStart());
             const storage = getStorage(app);
@@ -76,7 +74,6 @@ const AdminDashboard = () => {
                     const progress = Math.floor(
                         (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                     );
-                    //   console.log(progress);
                     setPhotoPercentage(progress);
                 },
                 (error) => {
