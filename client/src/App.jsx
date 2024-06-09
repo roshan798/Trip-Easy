@@ -18,74 +18,38 @@ const Booking = lazy(() => import("./pages/user/Booking"));
 const Search = lazy(() => import("./pages/Search"));
 
 const App = () => {
-    return (
-        <BrowserRouter>
-            <Header />
-            <Suspense fallback={<div>Loading...</div>}>
-                <Routes>
-                    <Route
-                        path="/"
-                        element={<Home />}
-                    />
-                    <Route
-                        path="/login"
-                        element={<Login />}
-                    />
-                    <Route
-                        path="/signup"
-                        element={<Signup />}
-                    />
-                    <Route
-                        path="/search"
-                        element={<Search />}
-                    />
-                    {/* user */}
-                    <Route
-                        path="/profile"
-                        element={<PrivateRoute />}>
-                        <Route
-                            path="user"
-                            element={<Profile />}
-                        />
-                    </Route>
-                    {/* admin */}
-                    <Route
-                        path="/profile"
-                        element={<AdminRoute />}>
-                        <Route
-                            path="admin"
-                            element={<AdminDashboard />}
-                        />
-                        <Route
-                            path="admin/update-package/:id"
-                            element={<UpdatePackage />}
-                        />
-                    </Route>
-                    <Route
-                        path="/about"
-                        element={<About />}
-                    />
-                    <Route
-                        path="/package/:id"
-                        element={<Package />}
-                    />
-                    <Route
-                        path="/package/ratings/:id"
-                        element={<RatingsPage />}
-                    />
-                    {/* checking user auth before booking */}
-                    <Route
-                        path="/booking"
-                        element={<PrivateRoute />}>
-                        <Route
-                            path=":packageId"
-                            element={<Booking />}
-                        />
-                    </Route>
-                </Routes>
-            </Suspense>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <Header />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/search" element={<Search />} />
+          {/* user */}
+          <Route path="/profile" element={<PrivateRoute />}>
+            <Route path="user" element={<Profile />} />
+          </Route>
+          {/* admin */}
+          <Route path="/profile" element={<AdminRoute />}>
+            <Route path="admin" element={<AdminDashboard />} />
+            <Route
+              path="admin/update-package/:id"
+              element={<UpdatePackage />}
+            />
+          </Route>
+          <Route path="/about" element={<About />} />
+          <Route path="/package/:id" element={<Package />} />
+          <Route path="/package/ratings/:id" element={<RatingsPage />} />
+          {/* checking user auth before booking */}
+          <Route path="/booking" element={<PrivateRoute />}>
+            <Route path=":packageId" element={<Booking />} />
+          </Route>
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  );
 };
 
 export default App;

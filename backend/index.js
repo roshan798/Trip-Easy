@@ -11,13 +11,12 @@ import bookingRoute from './routes/booking.route.js'
 import cookieParser from 'cookie-parser'
 const PORT = process.env.PORT || 8000
 
-
 const app = express()
 const corsOptions = {
-    origin: [process.env.CLIENT_URL, "http://localhost:5173"],
+    origin: [process.env.CLIENT_URL, 'http://localhost:5173'],
     credentials: true,
 }
-app.use(cors(corsOptions));
+app.use(cors(corsOptions))
 
 mongoose
     .connect(process.env.MONGO_URL)
@@ -29,7 +28,7 @@ mongoose
 app.get('/', (req, res) => {
     res.json({
         success: true,
-        message: "Welcome to Travel Tourism API",
+        message: 'Welcome to Travel Tourism API',
     })
 })
 app.use(express.json())
