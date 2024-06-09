@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import {
     updateUserStart,
     updateUserSuccess,
@@ -34,6 +34,7 @@ const AdminDashboard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const fileRef = useRef(null);
+    // eslint-disable-next-line no-unused-vars
     const { currentUser, loading, error } = useSelector((state) => state.user);
     const [profilePhoto, setProfilePhoto] = useState(undefined);
     const [photoPercentage, setPhotoPercentage] = useState(0);

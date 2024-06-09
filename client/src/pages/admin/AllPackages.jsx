@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getPackages as getPackagesApi } from "../../http/index.js";
+import {
+    getPackages as getPackagesApi,
+    deletePackage,
+} from "../../http/index.js";
 
 const AllPackages = () => {
     const [packages, setPackages] = useState([]);
@@ -8,49 +11,42 @@ const AllPackages = () => {
     const [filter, setFilter] = useState("all");
     const [search, setSearch] = useState("");
 
-    useEffect(() => {
-        const getPackages = async () => {
-            setPackages([]);
-            try {
-                setLoading(true);
-                const queryData = {
-                    searchTerm: search,
-                };
-                if (filter === "offer") {
-                    queryData["offer"] = true;
-                } else if (filter === "latest") {
-                    queryData["sort"] = "createdAt";
-                } else if (filter === "top") {
-                    queryData["sort"] = "packageRating";
-                }
-
-                // const res = await fetch(url);
-                const { data } = await getPackagesApi(queryData);
-                if (data?.success) {
-                    setPackages(data?.packages);
-                    setLoading(false);
-                } else {
-                    setLoading(false);
-                    alert(data?.message || "Something went wrong!");
-                }
-            } catch (error) {
-                console.log(error);
+    const getPackages = async () => {
+        setPackages([]);
+        try {
+            setLoading(true);
+            const queryData = {
+                searchTerm: search,
+            };
+            if (filter === "offer") {
+                queryData["offer"] = true;
+            } else if (filter === "latest") {
+                queryData["sort"] = "createdAt";
+            } else if (filter === "top") {
+                queryData["sort"] = "packageRating";
             }
-        };
 
+            // const res = await fetch(url);
+            const { data } = await getPackagesApi(queryData);
+            if (data?.success) {
+                setPackages(data?.packages);
+                setLoading(false);
+            } else {
+                setLoading(false);
+                alert(data?.message || "Something went wrong!");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(() => {
         getPackages();
     }, [filter, search]);
 
     const handleDelete = async (packageId) => {
         try {
             setLoading(true);
-            const res = await fetch(
-                `/api/package/delete-package/${packageId}`,
-                {
-                    method: "DELETE",
-                }
-            );
-            const data = await res.json();
+            const data = await deletePackage(packageId);
             alert(data?.message);
             getPackages();
             setLoading(false);
