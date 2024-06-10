@@ -11,6 +11,7 @@ const PackageCard = ({ packageData }) => {
           className="h-[190px] w-[300px] rounded border transition-all duration-300 hover:scale-110"
           src={packageData.packageImages[0]}
           alt="Package Image"
+          loading="lazy"
         />
         <div className="my-2 flex w-full flex-col">
           <p className="xsm:w-[250px] w-[90%] text-lg font-semibold capitalize">
