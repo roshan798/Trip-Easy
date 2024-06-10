@@ -96,6 +96,15 @@ export const updateAdminPassword = async (data) => {
     return api.post(`/api/user/update-password/${userId}`, updatePassword);
 }
 
+export const getAllUsers = (queryParams) => {
+    const { searchQuery } = queryParams;
+    let url = "/api/user/getAllUsers?searchTerm"
+    if (searchQuery) {
+        url = url.concat(searchQuery)
+    }
+    return api.get(url);
+}
+
 // package routes
 
 /**
@@ -160,9 +169,13 @@ export const deletePackage = async (packageId) => {
  * @param {String} someParam - An additional parameter for the request.
  * @returns {Promise} - Axios response promise.
  */
-export const getRatings = async (id, someParam) => {
-    const res = await api.get(`/api/rating/get-ratings/${id}/${someParam}`);
-    return res;
+export const getRatings = async (data) => {
+    const { packageId, serachQuery } = data;
+    let url = `/api/rating/get-ratings/${packageId}/`;
+    if (serachQuery) {
+        url = url.concat(serachQuery);
+    }
+    return await api.get(url);
 }
 
 /**
@@ -170,8 +183,18 @@ export const getRatings = async (id, someParam) => {
  * @param {String} id - The ID of the package.
  * @returns {Promise} - Axios response promise.
  */
-export const getAverageRating = async (id) => {
-    return await api.get(`/api/rating/average-rating/${id}`);
+export const getAverageRating = async (packageId) => {
+    return await api.get(`/api/rating/average-rating/${packageId}`);
+}
+
+export const checkRatingGiven = (data) => {
+    // `/api/rating/rating-given/${currentUser?._id}/${params?.id}`
+    const { userId, packageId } = data;
+    return api.get(`/api/rating/rating-given/${userId}/${packageId}`)
+}
+export const giveRating = (ratingData) => {
+    ///api/rating/give-rating
+    return api.post('/api/rating/give-rating', ratingData);
 }
 
 // booking routes
@@ -205,8 +228,9 @@ export const getAllBookings = (queryParams) => {
         url += `sort=${sortBy}&limit=${limit}&offer=${offer}&startIndex=${startIndex}`;
     }
     return api.get(url);
-    
-    return api.get(url);
-
+}
+export const deleteHistory = (queryParams) => {
+    const { id, userId } = queryParams;
+    return api.delete(`/api/booking/delete-booking-history/${id}/${userId}`);
 }
 export default api;

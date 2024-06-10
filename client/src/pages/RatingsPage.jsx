@@ -16,10 +16,14 @@ const RatingsPage = () => {
         try {
             setLoading(true);
             // Make request to get ratings
-            const { data } = await getRatingApi(params.id, "999999999999");
-
+            const packageId = params.id;
+            const reqData = {
+                packageId: packageId,
+                searchQuery: "999999999999",
+            };
+            const { data } = await getRatingApi(reqData);
             // Make request to get average rating
-            const { data2 } = await getAverageRating(params.id);
+            const { data2 } = await getAverageRating(packageId);
             if (data && data2) {
                 setPackageRatings(data);
                 setShowRatingStars(data2.rating);

@@ -22,7 +22,7 @@ import { app } from "../firebase";
 import MyBookings from "./user/MyBookings";
 import UpdateProfile from "./user/UpdateProfile";
 import MyHistory from "./user/MyHistory";
-import { updateProfilePicture } from "../http";
+import { deleteUser, logout, updateProfilePicture } from "../http";
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -108,8 +108,7 @@ const Profile = () => {
     const handleLogout = async () => {
         try {
             dispatch(logOutStart());
-            const res = await fetch("/api/auth/logout");
-            const data = await res.json();
+            const { data } = await logout();
             if (data?.success !== true) {
                 dispatch(logOutFailure(data?.message));
                 return;
@@ -119,6 +118,7 @@ const Profile = () => {
             alert(data?.message);
         } catch (error) {
             console.log(error);
+            dispatch(logOutFailure(error?.message));
         }
     };
 
@@ -130,10 +130,9 @@ const Profile = () => {
         if (CONFIRM) {
             try {
                 dispatch(deleteUserAccountStart());
-                const res = await fetch(`/api/user/delete/${currentUser._id}`, {
-                    method: "DELETE",
-                });
-                const data = await res.json();
+
+                const userId = currentUser._id;
+                const { data } = await deleteUser(userId);
                 if (data?.success === false) {
                     dispatch(deleteUserAccountFailure(data?.message));
                     alert("Something went wrong!");
@@ -141,7 +140,10 @@ const Profile = () => {
                 }
                 dispatch(deleteUserAccountSuccess());
                 alert(data?.message);
-            } catch (error) {}
+            } catch (error) {
+                console.log(error);
+                dispatch(deleteUserAccountFailure(error?.message));
+            }
         }
     };
 

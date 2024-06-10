@@ -37,7 +37,10 @@ const Search = () => {
             setShowMoreBtn(false);
             try {
                 const searchQuery = urlParams.toString();
-                const { data } = await getPackages({searchQuery});
+                const queryParams = {
+                    searchQuery: `searchQuery${searchQuery}`,
+                };
+                const { data } = await getPackages(queryParams);
                 setLoading(false);
                 setAllPackages(data?.packages);
                 if (data?.packages?.length > 8) {
@@ -95,8 +98,11 @@ const Search = () => {
         const urlParams = new URLSearchParams(location.search);
         urlParams.set("startIndex", startIndex);
         const searchQuery = urlParams.toString();
-        const res = await fetch(`/api/package/get-packages?${searchQuery}`);
-        const data = await res.json();
+        // const res = await fetch(`/api/package/get-packages?${searchQuery}`);
+        const queryParams = {
+            searchQuery: `searchQuery${searchQuery}`,
+        };
+        const { data } = await getPackages(queryParams);
         if (data?.packages?.length < 9) {
             setShowMoreBtn(false);
         }
