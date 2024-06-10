@@ -4,6 +4,7 @@ import User from '../models/user.model.js'
 export const requireSignIn = async (req, res, next) => {
     if (req?.cookies?.access_token) {
         const token = await req.cookies.access_token
+        console.log("token",token) // remove this
         if (!token)
             return res.status(401).send({
                 success: false,
@@ -34,7 +35,7 @@ export const isAdmin = async (req, res, next) => {
     try {
         const user = await User.findById(req.user.id)
         console.log("line 36, authMiddleware")
-        console.log(user);
+        console.log(user); // remove this
         if (user.user_role === 1) {
             next()
         } else {
