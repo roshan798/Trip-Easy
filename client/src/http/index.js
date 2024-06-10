@@ -109,17 +109,17 @@ export const getPackage = (params) => {
 
 /**
  * Get a list of packages based on query parameters.
- * @param {Object} queryParams - An object containing searchQuery, sortBy, limit, and offer.
+ * @param {Object} queryParams - An object containing searchQuery, sortBy, limit, offer, and startIndex.
  * @returns {Promise} - Axios response promise.
  */
 export const getPackages = (queryParams) => {
-    const { searchQuery = '', sortBy = 'packageRating', limit = 8, offer = false } = queryParams;
+    const { searchQuery = '', sortBy = 'packageRating', limit = 8, offer = false, startIndex = 0 } = queryParams;
     let url = '/api/package/get-packages?';
     if (searchQuery) {
         url += `${searchQuery}&`;
     }
-    if (sortBy || limit || offer) {
-        url += `sort=${sortBy}&limit=${limit}&offer=${offer}`;
+    if (sortBy || limit || offer || startIndex) {
+        url += `sort=${sortBy}&limit=${limit}&offer=${offer}&startIndex=${startIndex}`;
     }
     return api.get(url);
 }
@@ -171,8 +171,7 @@ export const getRatings = async (id, someParam) => {
  * @returns {Promise} - Axios response promise.
  */
 export const getAverageRating = async (id) => {
-    const res = await api.get(`/api/rating/average-rating/${id}`);
-    return res;
+    return await api.get(`/api/rating/average-rating/${id}`);
 }
 
 // booking routes
