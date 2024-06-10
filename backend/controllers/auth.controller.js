@@ -74,11 +74,16 @@ export const loginController = async (req, res) => {
 
         const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET)
         const { password: pass, ...rest } = validUser._doc //deselcting password to json user(this will json all data accept password)
-        res.cookie('access_token', token, { httpOnly: true }).status(200).json({
+        res.cookie('access_token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production', // only send over HTTPS in production
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // Lax for local, None for cross-site in production
+            domain: process.env.NODE_ENV === 'production' ? (process.env.SERVER) : 'localhost', // adjust domain for your needs
+        }).status(200).json({
             success: true,
             message: 'Login Success',
             user: rest,
-        })
+        });
     } catch (error) {
         console.log(error)
         return res.status(501).json({
