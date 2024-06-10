@@ -195,4 +195,18 @@ export const cancelBooking = (data) => {
     return api.post(`/api/booking/cancel-booking/${bookingId}/${userId}`);
 }
 
+export const getAllBookings = (queryParams) => {
+    const { searchQuery = '', sortBy = 'packageRating', limit = 8, offer = false, startIndex = 0 } = queryParams;
+    let url = '/api/booking/get-allBookings';
+    if (searchQuery) {
+        url += `${searchQuery}&`;
+    }
+    if (sortBy || limit || offer || startIndex) {
+        url += `sort=${sortBy}&limit=${limit}&offer=${offer}&startIndex=${startIndex}`;
+    }
+    return api.get(url);
+    
+    return api.get(url);
+
+}
 export default api;

@@ -15,7 +15,7 @@ const RatingsReviews = () => {
         try {
             setLoading(true);
             let queryParams = {
-                searchQuery: search,
+            searchQuery: `searchTerm=${search}`,
                 sortBy:
                     filter === "most" ? "packageTotalRatings" : "packageRating",
             };
@@ -44,7 +44,7 @@ const RatingsReviews = () => {
     const onShowMoreSClick = async () => {
         const numberOfPackages = packages.length;
         const queryParams = {
-            searchQuery: search,
+            searchQuery: `searchTerm=${search}`,
             sortBy: filter === "most" ? "packageTotalRatings" : "packageRating",
             startIndex: numberOfPackages,
         };
