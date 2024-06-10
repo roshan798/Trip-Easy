@@ -96,6 +96,15 @@ export const updateAdminPassword = async (data) => {
     return api.post(`/api/user/update-password/${userId}`, updatePassword);
 }
 
+export const getAllUsers = (queryParams) => {
+    const { searchQuery } = queryParams;
+    let url = "/api/user/getAllUsers?searchTerm"
+    if (searchQuery) {
+        url = url.concat(searchQuery)
+    }
+    return api.get(url);
+}
+
 // package routes
 
 /**
@@ -205,8 +214,9 @@ export const getAllBookings = (queryParams) => {
         url += `sort=${sortBy}&limit=${limit}&offer=${offer}&startIndex=${startIndex}`;
     }
     return api.get(url);
-    
-    return api.get(url);
-
+}
+export const deleteHistory = (queryParams) => {
+    const { id, userId } = queryParams;
+    return api.delete(`/api/booking/delete-booking-history/${id}/${userId}`);
 }
 export default api;
