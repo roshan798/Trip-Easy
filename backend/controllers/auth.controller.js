@@ -76,10 +76,10 @@ export const loginController = async (req, res) => {
         const { password: pass, ...rest } = validUser._doc //deselcting password to json user(this will json all data accept password)
         const cookieOptions = {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'None', // Lax for local, None for cross-site in production
-            domain: process.env.NODE_ENV === 'production' ? (process.env.SERVER) : 'localhost', // adjust domain for your needs
-        }
+            secure: process.env.NODE_ENV === 'production', // Only true in production
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // None for cross-site in production, Lax for local
+            domain: process.env.NODE_ENV === 'production' ? process.env.server : undefined, // undefined for local development
+        };
         console.log(cookieOptions);
         res.cookie('access_token', token, cookieOptions)
         console.dir(req.cookies.access_token)
@@ -87,6 +87,7 @@ export const loginController = async (req, res) => {
             success: true,
             message: 'Login Success',
             user: rest,
+            cookieOptions // remove this 
         });
     } catch (error) {
         console.log(error)
