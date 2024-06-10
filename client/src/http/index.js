@@ -171,7 +171,11 @@ export const deletePackage = async (packageId) => {
  */
 export const getRatings = async (data) => {
     const { packageId, serachQuery } = data;
-    return await api.get(`/api/rating/get-ratings/${packageId}/${serachQuery}`);
+    let url = `/api/rating/get-ratings/${packageId}/`;
+    if (serachQuery) {
+        url = url.concat(serachQuery);
+    }
+    return await api.get(url);
 }
 
 /**
@@ -181,6 +185,16 @@ export const getRatings = async (data) => {
  */
 export const getAverageRating = async (packageId) => {
     return await api.get(`/api/rating/average-rating/${packageId}`);
+}
+
+export const checkRatingGiven = (data) => {
+    // `/api/rating/rating-given/${currentUser?._id}/${params?.id}`
+    const { userId, packageId } = data;
+    return api.get(`/api/rating/rating-given/${userId}/${packageId}`)
+}
+export const giveRating = (ratingData) => {
+    ///api/rating/give-rating
+    return api.post('/api/rating/give-rating', ratingData);
 }
 
 // booking routes

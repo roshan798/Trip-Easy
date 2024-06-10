@@ -17,8 +17,12 @@ import {
 import Rating from "@mui/material/Rating";
 import { useSelector } from "react-redux";
 import RatingCard from "./RatingCard";
+import {
+    getPackage,
+    checkRatingGiven as checkRatingGivenApi,
+    getRatings as getRatingsApi,
+} from "../http/index.js";
 
-import { getPackage } from "../http/index.js";
 const Package = () => {
     SwiperCore.use([Navigation]);
     const { currentUser } = useSelector((state) => state.user);
@@ -58,7 +62,7 @@ const Package = () => {
     const getPackageData = async () => {
         try {
             setLoading(true);
-            const {data} = await getPackage(params);
+            const { data } = await getPackage(params);
             if (data?.success) {
                 setPackageData({
                     packageName: data?.packageData?.packageName,
@@ -110,14 +114,7 @@ const Package = () => {
         }
         try {
             setLoading(true);
-            const res = await fetch("/api/rating/give-rating", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(ratingsData),
-            });
-            const data = await res.json();
+            const { data } = await giveRating(ratingsData);
             if (data?.success) {
                 setLoading(false);
                 alert(data?.message);
@@ -129,14 +126,18 @@ const Package = () => {
                 alert(data?.message || "Something went wrong!");
             }
         } catch (error) {
+            setLoading(false);
             console.log(error);
         }
     };
 
     const getRatings = async () => {
         try {
-            const res = await fetch(`/api/rating/get-ratings/${params.id}/4`);
-            const data = await res.json();
+            const reqData = {
+                packageId: params.id,
+                serachQuery: 4,
+            };
+            const { data } = await getRatingsApi(reqData);
             if (data) {
                 setPackageRatings(data);
             } else {
@@ -144,15 +145,17 @@ const Package = () => {
             }
         } catch (error) {
             console.log(error);
+            setPackageRatings("Something wrong happend");
         }
     };
 
     const checkRatingGiven = async () => {
         try {
-            const res = await fetch(
-                `/api/rating/rating-given/${currentUser?._id}/${params?.id}`
-            );
-            const data = await res.json();
+            const reqData = {
+                userId: currentUser?._id,
+                packageId: params?.id,
+            };
+            const { data } = await checkRatingGivenApi(reqData);
             setRatingGiven(data?.given);
         } catch (error) {
             console.log(error);
