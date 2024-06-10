@@ -169,9 +169,9 @@ export const deletePackage = async (packageId) => {
  * @param {String} someParam - An additional parameter for the request.
  * @returns {Promise} - Axios response promise.
  */
-export const getRatings = async (id, someParam) => {
-    const res = await api.get(`/api/rating/get-ratings/${id}/${someParam}`);
-    return res;
+export const getRatings = async (data) => {
+    const { packageId, serachQuery } = data;
+    return await api.get(`/api/rating/get-ratings/${packageId}/${serachQuery}`);
 }
 
 /**
@@ -179,8 +179,8 @@ export const getRatings = async (id, someParam) => {
  * @param {String} id - The ID of the package.
  * @returns {Promise} - Axios response promise.
  */
-export const getAverageRating = async (id) => {
-    return await api.get(`/api/rating/average-rating/${id}`);
+export const getAverageRating = async (packageId) => {
+    return await api.get(`/api/rating/average-rating/${packageId}`);
 }
 
 // booking routes
