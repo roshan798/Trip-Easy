@@ -9,10 +9,15 @@ export default function AdminRoute() {
     const [ok, setOk] = useState(false);
 
     const authCheck = async () => {
-        const { data } = await loginAdmin();
-        console.log("admin login ", data);
-        if (data.check) setOk(true);
-        else setOk(false);
+        try {
+            const { data } = await loginAdmin();
+            console.log("admin login ", data);
+            if (data.check) setOk(true);
+            else setOk(false);
+        } catch (error) {
+            console.log(error);
+            setOk(false);
+        }
     };
 
     useEffect(() => {
