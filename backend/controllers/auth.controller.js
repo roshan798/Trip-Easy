@@ -80,7 +80,7 @@ export const loginController = async (req, res) => {
             sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // None for cross-site in production, Lax for local
             domain: process.env.NODE_ENV === 'production' ? process.env.server : undefined, // undefined for local development
         };
-        console.log(cookieOptions);
+        // console.log(cookieOptions);
         res.cookie('access_token', token, cookieOptions)
         console.dir(req.cookies.access_token)
         return res.status(200).json({
