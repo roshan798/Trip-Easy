@@ -62,7 +62,10 @@ const Package = () => {
     const getPackageData = async () => {
         try {
             setLoading(true);
-            const { data } = await getPackage(params);
+            const reqData = {
+                packageId: params?.id,
+            };
+            const { data } = await getPackage(reqData);
             if (data?.success) {
                 setPackageData({
                     packageName: data?.packageData?.packageName,
@@ -84,13 +87,13 @@ const Package = () => {
                     packageTotalRatings: data?.packageData?.packageTotalRatings,
                     packageImages: data?.packageData?.packageImages,
                 });
-                setLoading(false);
             } else {
                 setError(data?.message || "Something went wrong!");
-                setLoading(false);
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
