@@ -131,6 +131,7 @@ export const getAllBookings = async (req, res) => {
 
 //get current bookings for user by id
 export const getUserCurrentBookings = async (req, res) => {
+    console.log("called booking.controller.js");
     try {
         if (req?.user?.id !== req?.params?.id) {
             return res.status(401).send({
@@ -139,6 +140,8 @@ export const getUserCurrentBookings = async (req, res) => {
             })
         }
         const searchTerm = req?.query?.searchTerm || ''
+        console.log("line 142 booking.controller.js")
+        // console.log(userId, req.params.id)
         const bookings = await Booking.find({
             buyer: new ObjectId(req?.params?.id),
             date: { $gt: new Date().toISOString() },
