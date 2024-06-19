@@ -74,27 +74,28 @@ export const updateProfilePicture = async (data) => {
     console.log("user profile photo", data);
     return api.post(`/api/user/update-profile-photo/${userId}`, formData);
 }
+/**
+ * Update  user password.
+ * @param {Object} data - An object containing userId and updatePassword object.
+ * @returns {Promise} - Axios response promise.
+ */
+export const updatePassword = async (data) => {
+    const { userId, updatePassword } = data;
+    return api.post(`/api/user/update-password/${userId}`, updatePassword);
+}
 
 /**
  * Update admin user information.
  * @param {Object} data - An object containing userId and formData.
  * @returns {Promise} - Axios response promise.
  */
-export const updateAdmin = async (data) => {
+export const updateUser = async (data) => {
     const { userId, formData } = data;
     console.log(data);
     return api.post(`/api/user/update/${userId}`, formData);
 }
 
-/**
- * Update admin user password.
- * @param {Object} data - An object containing userId and updatePassword object.
- * @returns {Promise} - Axios response promise.
- */
-export const updateAdminPassword = async (data) => {
-    const { userId, updatePassword } = data;
-    return api.post(`/api/user/update-password/${userId}`, updatePassword);
-}
+
 
 export const getAllUsers = (queryParams) => {
     const { searchQuery } = queryParams;
@@ -113,7 +114,8 @@ export const getAllUsers = (queryParams) => {
  * @returns {Promise} - Axios response promise.
  */
 export const getPackage = (params) => {
-    return api.get(`/api/package/get-package-data/${params?.id}`);
+    const { packageId } = params;
+    return api.get(`/api/package/get-package-data/${packageId}`);
 }
 
 /**
@@ -159,6 +161,11 @@ export const updatePackage = async (data) => {
  */
 export const deletePackage = async (packageId) => {
     return api.delete(`/api/package/delete-package/${packageId}`);
+}
+
+export const bookPackage = (queryParams) => {
+    const { bookingData, packageId } = queryParams;
+    return api.post(`/api/booking/book-package/${packageId}`, bookingData)
 }
 
 // rating routes
@@ -229,8 +236,26 @@ export const getAllBookings = (queryParams) => {
     }
     return api.get(url);
 }
+export const getUserBookings = (queryParams) => {
+    const { userId, searchQuery } = queryParams;
+    const url = `/api/booking/get-allUserBookings/${userId}${searchQuery}`;
+    return api.get(url)
+}
+export const getUserCurrentBookings = (queryParams) => {
+    const { userId, searchQuery } = queryParams;
+    const url = `/api/booking/get-UserCurrentBookings/${userId}${searchQuery}`;
+    return api.get(url)
+}
+
 export const deleteHistory = (queryParams) => {
     const { id, userId } = queryParams;
     return api.delete(`/api/booking/delete-booking-history/${id}/${userId}`);
 }
+// `/api/booking/delete-booking-history/${id}/${currentUser._id}`
+
+export const getBraintreeToken = () => {
+    return api.get('/api/package/braintree/token');
+    // /api/package / braintree / token
+}
+
 export default api;

@@ -9,7 +9,7 @@ import {
     updatePassSuccess,
     updatePassFailure,
 } from "../../redux/user/userSlice";
-import { updateAdmin, updateAdminPassword } from "../../http";
+import { updateUser, updatePassword as updateAdminPassword } from "../../http";
 
 const AdminUpdateProfile = () => {
     const { currentUser, error } = useSelector((state) => state.user);
@@ -67,7 +67,7 @@ const AdminUpdateProfile = () => {
         try {
             setLoading(true);
             dispatch(updateUserStart());
-            const { data } = await updateAdmin({
+            const { data } = await updateUser({
                 userId: currentUser._id,
                 formData: formData,
             });
