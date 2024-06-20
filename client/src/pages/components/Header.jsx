@@ -7,35 +7,26 @@ const Header = () => {
     const { currentUser } = useSelector((state) => state.user);
     return (
         <>
-            <div className="flex items-center justify-between bg-slate-400 p-4">
+            <div className="flex items-center justify-between bg-slate-100 p-4">
                 <Link
                     to="/"
-                    className="relative h-min text-4xl font-bold"
-                    style={{
-                        color: "transparent",
-                        WebkitTextStroke: "0.7px",
-                        WebkitTextStrokeColor: "#fff",
-                    }}>
-                    Come
-                    <span
-                        className="absolute left-1 top-[-10px] rounded-lg text-center text-2xl text-slate-700 shadow-xl"
-                        style={{
-                            WebkitTextStroke: "0",
-                        }}>
-                        Dream Tours
-                    </span>
+                    className="">
+                    <img
+                        src="/images/logo1.png"
+                        id="logo-image"
+                        alt="trip easy logo"
+                        className="object-cover h-12 w-48"
+                    />
                 </Link>
-                <ul className="flex list-none flex-wrap items-center justify-end gap-2 font-semibold text-white">
-                    <li className="transition-all duration-150 hover:scale-105 hover:underline">
+
+                <ul className="flex list-none flex-wrap items-center justify-end gap-4 font-semibold text-white">
+                    <li className="px-4 py-2 bg-gray-500/20 hover:bg-gray-500/50 cursor-pointer rounded transition-all *:text-black duration-150 hover:scale-105 hover:underline text-black">
                         <Link to={`/`}>Home</Link>
                     </li>
-                    <li className="transition-all duration-150 hover:scale-105 hover:underline">
+                    <li className=" px-4 py-2 bg-gray-500/20 hover:bg-gray-500/50 cursor-pointer rounded transition-all duration-150 hover:scale-105 hover:underline text-black">
                         <Link to={`/search`}>Packages</Link>
                     </li>
-                    {/* <li className="transition-all duration-150 hover:scale-105 hover:underline">
-                        <Link to={`/about`}>About</Link>
-                    </li> */}
-                    <li className="flex h-10 w-10 items-center justify-center">
+                    <li className="ml-3 flex h-10 w-10 items-center justify-center">
                         {currentUser ? (
                             <Link
                                 to={`/profile/${

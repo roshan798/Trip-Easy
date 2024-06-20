@@ -195,9 +195,9 @@ export const bookPackage = (queryParams) => {
  */
 export const getRatings = async (data) => {
     const { packageId, searchQuery } = data;
-    let url = `/api/rating/get-ratings/${packageId}/`;
+    let url = `/api/rating/get-ratings/${packageId}`;
     if (searchQuery) {
-        url = url.concat(searchQuery);
+        url = url.concat("/" + searchQuery);
     }
     return await api.get(url);
 }

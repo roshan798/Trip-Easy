@@ -26,6 +26,7 @@ const RatingsPage = () => {
             const { data2 } = await getAverageRating(packageId);
             if (data && data2) {
                 setPackageRatings(data);
+                console.log(data,data2);
                 setShowRatingStars(data2.rating);
                 setTotalRatings(data2.totalRatings);
                 setLoading(false);
