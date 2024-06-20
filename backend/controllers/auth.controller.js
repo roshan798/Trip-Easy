@@ -79,10 +79,11 @@ export const loginController = async (req, res) => {
             secure: process.env.NODE_ENV === 'production', // Only true in production
             sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // None for cross-site in production, Lax for local
             domain: process.env.NODE_ENV === 'production' ? process.env.server : undefined, // undefined for local development
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // expiry after 7 days
         };
-        console.log(cookieOptions);
+        // console.log(cookieOptions);
         res.cookie('access_token', token, cookieOptions)
-        console.dir(req.cookies.access_token)
+        // console.dir(req.cookies.access_token)
         return res.status(200).json({
             success: true,
             message: 'Login Success',

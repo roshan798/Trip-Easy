@@ -138,7 +138,7 @@ const Package = () => {
         try {
             const reqData = {
                 packageId: params.id,
-                serachQuery: 4,
+                searchQuery: 4,
             };
             const { data } = await getRatingsApi(reqData);
             if (data) {
