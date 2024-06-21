@@ -8,6 +8,7 @@ import userRoute from './routes/user.route.js'
 import packageRoute from './routes/package.route.js'
 import ratingRoute from './routes/rating.route.js'
 import bookingRoute from './routes/booking.route.js'
+import locationRoute from "./routes/location.route.js"
 import cookieParser from 'cookie-parser'
 const PORT = process.env.PORT || 8000
 
@@ -38,6 +39,7 @@ app.use('/api/user', userRoute)
 app.use('/api/package', packageRoute)
 app.use('/api/rating', ratingRoute)
 app.use('/api/booking', bookingRoute)
+app.use('/api/location', locationRoute);
 
 //port
 app.listen(process.env.PORT, () => {
