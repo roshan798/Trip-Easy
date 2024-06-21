@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./styles/Home.css";
-import { FaCalendar, FaSearch, FaStar } from "react-icons/fa";
+import { FaCalendar, FaStar } from "react-icons/fa";
 import { FaRankingStar } from "react-icons/fa6";
 import { LuBadgePercent } from "react-icons/lu";
 import PackageCard from "./PackageCard";
