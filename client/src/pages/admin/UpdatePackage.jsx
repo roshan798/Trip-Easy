@@ -37,7 +37,10 @@ const UpdatePackage = () => {
     useEffect(() => {
         const getPackageData = async () => {
             try {
-                const { data } = await getPackage(params);
+                const reqData = {
+                    packageId: params.id,
+                };
+                const { data } = await getPackage(reqData);
                 if (data?.success) {
                     // console.log(data);
                     setFormData({
