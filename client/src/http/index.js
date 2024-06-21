@@ -135,7 +135,7 @@ export const getPackage = (params) => {
  * @returns {Promise} - Axios response promise.
  */
 export const getPackages = (queryParams) => {
-    const { searchQuery = '', sortBy = 'packageRating', limit = 8, offer = false, startIndex = 0 } = queryParams;
+    const { searchQuery = '', sortBy = 'packageRating', limit = 1000, offer = false, startIndex = 0 } = queryParams;
     let url = '/api/package/get-packages?';
     if (searchQuery) {
         url += `${searchQuery}&`;
