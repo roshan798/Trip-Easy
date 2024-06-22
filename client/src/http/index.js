@@ -131,15 +131,27 @@ export const getPackage = (params) => {
 
 /**
  * Get a list of packages based on query parameters.
- * @param {Object} queryParams - An object containing searchQuery, sortBy, limit, offer, and startIndex.
+ * @param {Object} queryParams - An object containing page, resultsPerPage, searchQuery, sortBy, limit, offer, and startIndex.
  * @returns {Promise} - Axios response promise.
  */
 export const getPackages = (queryParams) => {
-    const { searchQuery = '', sortBy = 'packageRating', limit = 1000, offer = false, startIndex = 0 } = queryParams;
+    const {
+        searchQuery = '',
+        sortBy = 'packageRating',
+        limit = 1000,
+        offer = false,
+        startIndex = 0,
+        page = 0,
+        resultsPerPage = 10
+    } = queryParams;
     let url = '/api/package/get-packages?';
     if (searchQuery) {
         url += `${searchQuery}&`;
     }
+    // add the page and resultsPerPage to the url query 
+    // if (page && resultsPerPage) {
+    url += `page=${page}&resultsPerPage=${resultsPerPage}&`;
+    // }
     if (sortBy || limit || offer || startIndex) {
         url += `sort=${sortBy}&limit=${limit}&offer=${offer}&startIndex=${startIndex}`;
     }
