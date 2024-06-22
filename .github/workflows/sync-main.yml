@@ -47,24 +47,5 @@ jobs:
           git pull origin rahul
           git merge origin/main
           git push origin rahul
-
-      - name: Update saurav
-        run: |
-          git checkout main
-          git fetch origin
-          git checkout saurav
-          git pull origin saurav
-          git merge origin/main
-          git push origin saurav
-
-      - name: Update monazir
-        run: |
-          git checkout main
-          git fetch origin
-          git checkout monazir
-          git pull origin monazir
-          git merge origin/main
-          git push origin monazir
-
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
