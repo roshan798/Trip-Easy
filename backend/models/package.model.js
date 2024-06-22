@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const packageSchema = new mongoose.Schema(
     {
@@ -62,10 +62,40 @@ const packageSchema = new mongoose.Schema(
             type: Array,
             required: true,
         },
+        keywords: {
+            type: String,
+            required: true,
+        },
     },
     { timestamps: true }
-)
+);
 
-const Package = mongoose.model('Package', packageSchema)
+// Middleware to set the keywords field before saving
+packageSchema.pre('save', function (next) {
+    this.keywords = generateKeywords(this);
+    next();
+});
 
-export default Package
+// Middleware to set the keywords field before updating
+packageSchema.pre('findOneAndUpdate', function (next) {
+    const update = this.getUpdate();
+    if (update.packageName || update.packageDescription || update.packageDestination || update.packageAccommodation || update.packageTransportation || update.packageMeals || update.packageActivities) {
+        update.keywords = generateKeywords(update);
+    }
+    next();
+});
+
+// Function to generate keywords from package data
+function generateKeywords(packageData) {
+    const {
+        packageName,
+        packageDestination,
+        packageActivities
+    } = packageData;
+    const keywords = `${packageName} ${packageDestination} ${packageActivities}`.toLowerCase().trim();
+    return keywords;
+}
+
+const Package = mongoose.model('Package', packageSchema);
+
+export default Package;

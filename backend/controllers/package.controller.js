@@ -38,28 +38,28 @@ export const createPackage = async (req, res) => {
             !packageTransportation ||
             !packageMeals ||
             !packageActivities ||
-            !packageOffer === '' ||
+            packageOffer === undefined ||
             !packageImages
         ) {
-            return res.status(200).send({
+            return res.status(400).send({
                 success: false,
                 message: 'All fields are required!',
             })
         }
         if (packagePrice < packageDiscountPrice) {
-            return res.status(200).send({
+            return res.status(400).send({
                 success: false,
                 message: 'Regular price should be greater than discount price!',
             })
         }
         if (packagePrice <= 0 || packageDiscountPrice < 0) {
-            return res.status(200).send({
+            return res.status(400).send({
                 success: false,
                 message: 'Price should be greater than 0!',
             })
         }
         if (packageDays <= 0 && packageNights <= 0) {
-            return res.status(200).send({
+            return res.status(400).send({
                 success: false,
                 message: 'Provide days and nights!',
             })
@@ -74,56 +74,68 @@ export const createPackage = async (req, res) => {
         } else {
             return res.status(500).send({
                 success: false,
-                message: 'Soemthing went wrong',
+                message: 'Something went wrong',
             })
         }
     } catch (error) {
         console.log(error)
+        return res.status(500).send({
+            success: false,
+            message: 'Internal Server Error',
+        })
     }
 }
 
 //get all packages
+// Get all packages endpoint
 export const getPackages = async (req, res) => {
     try {
-        const searchTerm = req.query.searchTerm || ''
-        const limit = parseInt(req.query.limit) || 9
-        const startIndex = parseInt(req.query.startIndex) || 0
+        const searchTerm = req.query.searchTerm || '';
+        const limit = parseInt(req.query.limit) || 20;
+        const startIndex = parseInt(req.query.startIndex) || 0;
 
-        let offer = req.query.offer
+        let offer = req.query.offer;
         if (offer === undefined || offer === 'false') {
-            offer = { $in: [false, true] }
+            offer = { $in: [false, true] };
+        } else {
+            offer = 'true';
         }
 
-        const sort = req.query.sort || 'createdAt'
+        const sort = req.query.sort || 'createdAt';
+        const order = req.query.order || 'desc';
 
-        const order = req.query.order || 'desc'
-        const packages = await Package.find({
-            $or: [
-                { packageName: { $regex: searchTerm, $options: 'i' } },
-                { packageDestination: { $regex: searchTerm, $options: 'i' } },
-            ],
-            packageOffer: offer,
-        })
+        // Prepare search query
+        const querySearch = {
+            $and: [
+                { "keywords": { "$regex": searchTerm, "$options": 'i' } },
+                { "packageOffer": offer }
+            ]
+        };
+        // Find packages based on search criteria
+        const packages = await Package.find(querySearch)
             .sort({ [sort]: order })
-            .limit(limit)
             .skip(startIndex)
-        if (packages) {
+            .limit(limit);
+
+        if (packages.length > 0) {
             return res.status(200).send({
                 success: true,
                 packages,
-            })
+            });
         } else {
-            return res.status(500).send({
+            return res.status(404).send({
                 success: false,
-                message: 'No Packages yet',
-            })
+                message: 'No Packages found',
+            });
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        return res.status(500).send({
+            success: false,
+            message: 'Internal Server Error',
+        });
     }
-}
-
-//get package data
+};//get package data
 export const getPackageData = async (req, res) => {
     try {
         const packageData = await Package.findById(req?.params?.id)
@@ -139,6 +151,10 @@ export const getPackageData = async (req, res) => {
         })
     } catch (error) {
         console.log(error)
+        return res.status(500).send({
+            success: false,
+            message: 'Internal Server Error',
+        })
     }
 }
 
@@ -146,15 +162,18 @@ export const getPackageData = async (req, res) => {
 export const updatePackage = async (req, res) => {
     try {
         const findPackage = await Package.findById(req.params.id)
-        if (!findPackage)
+        if (!findPackage) {
             return res.status(404).send({
                 success: false,
                 message: 'Package not found!',
             })
+        }
+
+        const keywords = `${req.body.packageName || findPackage.packageName} ${req.body.packageDescription || findPackage.packageDescription} ${req.body.packageDestination || findPackage.packageDestination} ${req.body.packageAccommodation || findPackage.packageAccommodation} ${req.body.packageTransportation || findPackage.packageTransportation} ${req.body.packageMeals || findPackage.packageMeals} ${req.body.packageActivities || findPackage.packageActivities}`.toLowerCase();
 
         const updatedPackage = await Package.findByIdAndUpdate(
             req.params.id,
-            req.body,
+            { ...req.body, keywords },
             { new: true }
         )
         res.status(200).send({
@@ -164,6 +183,10 @@ export const updatePackage = async (req, res) => {
         })
     } catch (error) {
         console.log(error)
+        return res.status(500).send({
+            success: false,
+            message: 'Internal Server Error',
+        })
     }
 }
 
@@ -176,7 +199,11 @@ export const deletePackage = async (req, res) => {
             message: 'Package Deleted!',
         })
     } catch (error) {
-        cnsole.log(error)
+        console.log(error)
+        return res.status(500).send({
+            success: false,
+            message: 'Internal Server Error',
+        })
     }
 }
 
@@ -193,5 +220,9 @@ export const braintreeTokenController = async (req, res) => {
         })
     } catch (error) {
         console.log(error)
+        return res.status(500).send({
+            success: false,
+            message: 'Internal Server Error',
+        })
     }
 }

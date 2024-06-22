@@ -38,10 +38,10 @@ const Search = () => {
             try {
                 const searchQuery = urlParams.toString();
                 const queryParams = {
-                    searchQuery: `searchQuery${searchQuery}`,
+                    searchQuery: searchQuery,
                 };
                 const { data } = await getPackages(queryParams);
-                setLoading(false);
+
                 setAllPackages(data?.packages);
                 if (data?.packages?.length > 8) {
                     setShowMoreBtn(true);
@@ -50,6 +50,8 @@ const Search = () => {
                 }
             } catch (error) {
                 console.log(error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchAllPackages();
@@ -100,7 +102,7 @@ const Search = () => {
         const searchQuery = urlParams.toString();
         // const res = await fetch(`/api/package/get-packages?${searchQuery}`);
         const queryParams = {
-            searchQuery: `searchQuery${searchQuery}`,
+            searchQuery: searchQuery,
         };
         const { data } = await getPackages(queryParams);
         if (data?.packages?.length < 9) {
@@ -122,7 +124,7 @@ const Search = () => {
                         <input
                             type="text"
                             id="searchTerm"
-                            placeholder="Search"
+                            placeholder="Search by Destination, Activity, or Package Name"
                             className="w-full rounded-lg border p-3"
                             value={sideBarSearchData.searchTerm}
                             onChange={handleChange}

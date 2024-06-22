@@ -193,8 +193,6 @@ const UpdatePackage = () => {
             setLoading(false);
             setError(false);
             alert(data?.message);
-            // getPackageData();
-            // setImages([]);
             navigate(`/package/${params?.id}`);
         } catch (err) {
             console.log(err);
