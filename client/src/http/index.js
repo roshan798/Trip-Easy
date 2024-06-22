@@ -1,13 +1,13 @@
-import axios from 'axios';
+import axios from "axios";
 
 // Create an Axios instance with default configurations
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-    withCredentials: true,
-    headers: {
-        "Content-Type": 'application/json',
-        Accept: 'application/json',
-    }
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
 });
 
 //////////////////////
@@ -20,8 +20,8 @@ const api = axios.create({
  * @returns {Promise} - Axios response promise.
  */
 export const signup = (data) => {
-    return api.post('/api/auth/signup', data);
-}
+  return api.post("/api/auth/signup", data);
+};
 
 /**
  * Log in an existing user.
@@ -29,32 +29,32 @@ export const signup = (data) => {
  * @returns {Promise} - Axios response promise.
  */
 export const login = (data) => {
-    return api.post('/api/auth/login', data);
-}
+  return api.post("/api/auth/login", data);
+};
 
 /**
  * Check if the admin is authenticated.
  * @returns {Promise} - Axios response promise.
  */
 export const loginAdmin = () => {
-    return api.get('/api/user/admin-auth');
-}
+  return api.get("/api/user/admin-auth");
+};
 
 /**
  * Check if the user is authenticated.
  * @returns {Promise} - Axios response promise.
  */
 export const loginUser = () => {
-    return api.get('/api/user/user-auth');
-}
+  return api.get("/api/user/user-auth");
+};
 
 /**
  * Log out the current user.
  * @returns {Promise} - Axios response promise.
  */
 export const logout = async () => {
-    return await api.get('/api/auth/logout');
-}
+  return await api.get("/api/auth/logout");
+};
 
 //////////////////////
 // User Routes
@@ -66,8 +66,8 @@ export const logout = async () => {
  * @returns {Promise} - Axios response promise.
  */
 export const deleteUser = async (userId) => {
-    return await api.delete(`/api/user/delete/${userId}`);
-}
+  return await api.delete(`/api/user/delete/${userId}`);
+};
 
 /**
  * Update a user's profile picture.
@@ -75,10 +75,10 @@ export const deleteUser = async (userId) => {
  * @returns {Promise} - Axios response promise.
  */
 export const updateProfilePicture = async (data) => {
-    const { userId, formData } = data;
-    console.log("user profile photo", data);
-    return api.post(`/api/user/update-profile-photo/${userId}`, formData);
-}
+  const { userId, formData } = data;
+  console.log("user profile photo", data);
+  return api.post(`/api/user/update-profile-photo/${userId}`, formData);
+};
 
 /**
  * Update user password.
@@ -86,9 +86,9 @@ export const updateProfilePicture = async (data) => {
  * @returns {Promise} - Axios response promise.
  */
 export const updatePassword = async (data) => {
-    const { userId, updatePassword } = data;
-    return api.post(`/api/user/update-password/${userId}`, updatePassword);
-}
+  const { userId, updatePassword } = data;
+  return api.post(`/api/user/update-password/${userId}`, updatePassword);
+};
 
 /**
  * Update admin user information.
@@ -96,10 +96,10 @@ export const updatePassword = async (data) => {
  * @returns {Promise} - Axios response promise.
  */
 export const updateUser = async (data) => {
-    const { userId, formData } = data;
-    console.log(data);
-    return api.post(`/api/user/update/${userId}`, formData);
-}
+  const { userId, formData } = data;
+  console.log(data);
+  return api.post(`/api/user/update/${userId}`, formData);
+};
 
 /**
  * Get all users with optional search query.
@@ -107,13 +107,13 @@ export const updateUser = async (data) => {
  * @returns {Promise} - Axios response promise.
  */
 export const getAllUsers = (queryParams) => {
-    const { searchQuery } = queryParams;
-    let url = "/api/user/getAllUsers?searchTerm";
-    if (searchQuery) {
-        url = url.concat(searchQuery);
-    }
-    return api.get(url);
-}
+  const { searchQuery } = queryParams;
+  let url = "/api/user/getAllUsers?searchTerm";
+  if (searchQuery) {
+    url = url.concat(searchQuery);
+  }
+  return api.get(url);
+};
 
 //////////////////////
 // Package Routes
@@ -125,9 +125,9 @@ export const getAllUsers = (queryParams) => {
  * @returns {Promise} - Axios response promise.
  */
 export const getPackage = (params) => {
-    const { packageId } = params;
-    return api.get(`/api/package/get-package-data/${packageId}`);
-}
+  const { packageId } = params;
+  return api.get(`/api/package/get-package-data/${packageId}`);
+};
 
 /**
  * Get a list of packages based on query parameters.
@@ -135,28 +135,28 @@ export const getPackage = (params) => {
  * @returns {Promise} - Axios response promise.
  */
 export const getPackages = (queryParams) => {
-    const {
-        searchQuery = '',
-        sortBy = 'packageRating',
-        limit = 1000,
-        offer = false,
-        startIndex = 0,
-        page = 0,
-        resultsPerPage = 10
-    } = queryParams;
-    let url = '/api/package/get-packages?';
-    if (searchQuery) {
-        url += `${searchQuery}&`;
-    }
-    // add the page and resultsPerPage to the url query 
-    // if (page && resultsPerPage) {
-    url += `page=${page}&resultsPerPage=${resultsPerPage}&`;
-    // }
-    if (sortBy || limit || offer || startIndex) {
-        url += `sort=${sortBy}&limit=${limit}&offer=${offer}&startIndex=${startIndex}`;
-    }
-    return api.get(url);
-}
+  const {
+    searchQuery = "",
+    sortBy = "packageRating",
+    limit = 1000,
+    offer = false,
+    startIndex = 0,
+    page = 0,
+    resultsPerPage = 10,
+  } = queryParams;
+  let url = "/api/package/get-packages?";
+  if (searchQuery) {
+    url += `${searchQuery}&`;
+  }
+  // add the page and resultsPerPage to the url query
+  // if (page && resultsPerPage) {
+  url += `page=${page}&resultsPerPage=${resultsPerPage}&`;
+  // }
+  if (sortBy || limit || offer || startIndex) {
+    url += `sort=${sortBy}&limit=${limit}&offer=${offer}&startIndex=${startIndex}`;
+  }
+  return api.get(url);
+};
 
 /**
  * Create a new package.
@@ -164,8 +164,8 @@ export const getPackages = (queryParams) => {
  * @returns {Promise} - Axios response promise.
  */
 export const createPackage = async (formData) => {
-    return await api.post('/api/package/create-package', formData);
-}
+  return await api.post("/api/package/create-package", formData);
+};
 
 /**
  * Update an existing package.
@@ -173,9 +173,9 @@ export const createPackage = async (formData) => {
  * @returns {Promise} - Axios response promise.
  */
 export const updatePackage = async (data) => {
-    const { packageId, formData } = data;
-    return api.post(`/api/package/update-package/${packageId}`, formData);
-}
+  const { packageId, formData } = data;
+  return api.post(`/api/package/update-package/${packageId}`, formData);
+};
 
 /**
  * Delete a package by packageId.
@@ -183,8 +183,8 @@ export const updatePackage = async (data) => {
  * @returns {Promise} - Axios response promise.
  */
 export const deletePackage = async (packageId) => {
-    return api.delete(`/api/package/delete-package/${packageId}`);
-}
+  return api.delete(`/api/package/delete-package/${packageId}`);
+};
 
 /**
  * Book a package.
@@ -192,9 +192,9 @@ export const deletePackage = async (packageId) => {
  * @returns {Promise} - Axios response promise.
  */
 export const bookPackage = (queryParams) => {
-    const { bookingData, packageId } = queryParams;
-    return api.post(`/api/booking/book-package/${packageId}`, bookingData);
-}
+  const { bookingData, packageId } = queryParams;
+  return api.post(`/api/booking/book-package/${packageId}`, bookingData);
+};
 
 //////////////////////
 // Rating Routes
@@ -206,13 +206,13 @@ export const bookPackage = (queryParams) => {
  * @returns {Promise} - Axios response promise.
  */
 export const getRatings = async (data) => {
-    const { packageId, searchQuery } = data;
-    let url = `/api/rating/get-ratings/${packageId}`;
-    if (searchQuery) {
-        url = url.concat("/" + searchQuery);
-    }
-    return await api.get(url);
-}
+  const { packageId, searchQuery } = data;
+  let url = `/api/rating/get-ratings/${packageId}`;
+  if (searchQuery) {
+    url = url.concat("/" + searchQuery);
+  }
+  return await api.get(url);
+};
 
 /**
  * Get the average rating for a specific package by ID.
@@ -220,8 +220,8 @@ export const getRatings = async (data) => {
  * @returns {Promise} - Axios response promise.
  */
 export const getAverageRating = async (packageId) => {
-    return await api.get(`/api/rating/average-rating/${packageId}`);
-}
+  return await api.get(`/api/rating/average-rating/${packageId}`);
+};
 
 /**
  * Check if a user has given a rating for a specific package.
@@ -229,9 +229,9 @@ export const getAverageRating = async (packageId) => {
  * @returns {Promise} - Axios response promise.
  */
 export const checkRatingGiven = (data) => {
-    const { userId, packageId } = data;
-    return api.get(`/api/rating/rating-given/${userId}/${packageId}`);
-}
+  const { userId, packageId } = data;
+  return api.get(`/api/rating/rating-given/${userId}/${packageId}`);
+};
 
 /**
  * Submit a rating for a package.
@@ -239,8 +239,8 @@ export const checkRatingGiven = (data) => {
  * @returns {Promise} - Axios response promise.
  */
 export const giveRating = (ratingData) => {
-    return api.post('/api/rating/give-rating', ratingData);
-}
+  return api.post("/api/rating/give-rating", ratingData);
+};
 
 //////////////////////
 // Booking Routes
@@ -252,8 +252,8 @@ export const giveRating = (ratingData) => {
  * @returns {Promise} - Axios response promise.
  */
 export const getCurrentBookings = async (searchTerm) => {
-    return api.get(`/api/booking/get-currentBookings?searchTerm=${searchTerm}`);
-}
+  return api.get(`/api/booking/get-currentBookings?searchTerm=${searchTerm}`);
+};
 
 /**
  * Cancel a booking by bookingId and userId.
@@ -261,9 +261,9 @@ export const getCurrentBookings = async (searchTerm) => {
  * @returns {Promise} - Axios response promise.
  */
 export const cancelBooking = (data) => {
-    const { bookingId, userId } = data;
-    return api.post(`/api/booking/cancel-booking/${bookingId}/${userId}`);
-}
+  const { bookingId, userId } = data;
+  return api.post(`/api/booking/cancel-booking/${bookingId}/${userId}`);
+};
 
 /**
  * Get all bookings with optional query parameters.
@@ -271,16 +271,22 @@ export const cancelBooking = (data) => {
  * @returns {Promise} - Axios response promise.
  */
 export const getAllBookings = (queryParams) => {
-    const { searchQuery = '', sortBy = 'packageRating', limit = 8, offer = false, startIndex = 0 } = queryParams;
-    let url = '/api/booking/get-allBookings';
-    if (searchQuery) {
-        url += `${searchQuery}&`;
-    }
-    if (sortBy || limit || offer || startIndex) {
-        url += `sort=${sortBy}&limit=${limit}&offer=${offer}&startIndex=${startIndex}`;
-    }
-    return api.get(url);
-}
+  const {
+    searchQuery = "",
+    sortBy = "packageRating",
+    limit = 8,
+    offer = false,
+    startIndex = 0,
+  } = queryParams;
+  let url = "/api/booking/get-allBookings";
+  if (searchQuery) {
+    url += `${searchQuery}&`;
+  }
+  if (sortBy || limit || offer || startIndex) {
+    url += `sort=${sortBy}&limit=${limit}&offer=${offer}&startIndex=${startIndex}`;
+  }
+  return api.get(url);
+};
 
 /**
  * Get all bookings for a specific user.
@@ -288,10 +294,10 @@ export const getAllBookings = (queryParams) => {
  * @returns {Promise} - Axios response promise.
  */
 export const getUserBookings = (queryParams) => {
-    const { userId, searchQuery } = queryParams;
-    const url = `/api/booking/get-allUserBookings/${userId}${searchQuery}`;
-    return api.get(url);
-}
+  const { userId, searchQuery } = queryParams;
+  const url = `/api/booking/get-allUserBookings/${userId}${searchQuery}`;
+  return api.get(url);
+};
 
 /**
  * Get current bookings for a specific user.
@@ -299,10 +305,10 @@ export const getUserBookings = (queryParams) => {
  * @returns {Promise} - Axios response promise.
  */
 export const getUserCurrentBookings = (queryParams) => {
-    const { userId, searchQuery } = queryParams;
-    const url = `/api/booking/get-UserCurrentBookings/${userId}${searchQuery}`;
-    return api.get(url);
-}
+  const { userId, searchQuery } = queryParams;
+  const url = `/api/booking/get-UserCurrentBookings/${userId}${searchQuery}`;
+  return api.get(url);
+};
 
 /**
  * Delete booking history by bookingId and userId.
@@ -310,16 +316,16 @@ export const getUserCurrentBookings = (queryParams) => {
  * @returns {Promise} - Axios response promise.
  */
 export const deleteHistory = (queryParams) => {
-    const { id, userId } = queryParams;
-    return api.delete(`/api/booking/delete-booking-history/${id}/${userId}`);
-}
+  const { id, userId } = queryParams;
+  return api.delete(`/api/booking/delete-booking-history/${id}/${userId}`);
+};
 
 /**
  * Get Braintree token for payment processing.
  * @returns {Promise} - Axios response promise.
  */
 export const getBraintreeToken = () => {
-    return api.get('/api/package/braintree/token');
-}
+  return api.get("/api/package/braintree/token");
+};
 
 export default api;

@@ -9,7 +9,7 @@ export default function PrivateRoute() {
   const [ok, setOk] = useState(false);
 
   const authCheck = async () => {
-    const {data} = await loginUser();
+    const { data } = await loginUser();
     if (data.check) setOk(true);
     else setOk(false);
   };

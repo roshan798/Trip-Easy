@@ -10,7 +10,7 @@ const firebaseConfig = {
   projectId: "trip-easy-c69e6",
   storageBucket: "trip-easy-c69e6.appspot.com",
   messagingSenderId: "929091329613",
-  appId: "1:929091329613:web:912f84ee48249993dc4604"
+  appId: "1:929091329613:web:912f84ee48249993dc4604",
 };
 
 // Initialize Firebase
