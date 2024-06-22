@@ -83,18 +83,12 @@ const Home = () => {
         <div className="main w-full">
             <div className="flex w-full flex-col">
                 <div className="backaground_image w-full"></div>
-                <div className="top-part flex w-full flex-col gap-2">
-                    <h1 className="mb-2 text-center text-4xl font-bold text-white underline">
-                        Trip Easy
-                    </h1>
-                    <h1 className="xsm:text-lg text-center text-sm font-semibold text-white">
-                        Travel With Ease
-                    </h1>
-                    <div className="mt-8 flex w-full items-center justify-center gap-2">
+                <div className="top-part flex w-full flex-col gap-4">
+                    <div className="mt-4 flex w-full items-center justify-center">
                         <input
                             type="text"
-                            className="w-[230px] rounded-lg border border-black bg-white bg-opacity-40 p-2 font-semibold text-white outline-none placeholder:text-white sm:w-2/5"
-                            placeholder="Search"
+                            className="w-[230px]  rounded-s-lg  p-3 shadow shadow-gray-800 placeholder:text-gray-200 bg-white/30 font-semibold text-white outline-none  sm:w-2/5"
+                            placeholder="Search by Destination, Activity, or Package Name"
                             value={search}
                             onChange={(e) => {
                                 setSearch(e.target.value);
@@ -104,17 +98,16 @@ const Home = () => {
                             onClick={() => {
                                 navigate(`/search?searchTerm=${search}`);
                             }}
-                            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl font-semibold hover:scale-95">
-                            Go
-                            {/* <FaSearch className="" /> */}
+                            className="flex hover:bg-gray-100 h-full px-4 items-center justify-center rounded-e-lg bg-gray-300 text-xl transition-colors  font-semibold">
+                            Search
                         </button>
                     </div>
-                    <div className="mt-10 flex w-[90%] max-w-xl justify-center">
+                    <div className="flex w-[90%] max-w-xl justify-center *:text-xl *:p-2 *:justify-between *:flex *:items-center *:flex-nowrap *:gap-2 *:px-4 *:py-2  ">
                         <button
                             onClick={() => {
                                 navigate("/search?offer=true");
                             }}
-                            className="xxsm:text-sm flex flex-1 items-center justify-around gap-x-1 rounded-s-full border-e border-white bg-slate-400 p-2 py-1 text-[8px] text-white transition-all duration-150 hover:scale-105 sm:text-lg">
+                            className="xxsm:text-sm rounded-s-md border-white bg-slate-400 p-2 py-1 text-[8px] text-white transition-all duration-150 hover:bg-gray-600 sm:text-lg">
                             Best Offers
                             <LuBadgePercent className="text-2xl" />
                         </button>
@@ -122,7 +115,7 @@ const Home = () => {
                             onClick={() => {
                                 navigate("/search?sort=packageRating");
                             }}
-                            className="xxsm:text-sm flex flex-1 items-center justify-around gap-x-1 border-x border-white bg-slate-400 p-2 py-1 text-[8px] text-white transition-all duration-150 hover:scale-105 sm:text-lg">
+                            className="xxsm:text-sm  border-white bg-slate-400 p-2 py-1 text-[8px] text-white transition-all duration-150 hover:bg-gray-600 sm:text-lg">
                             Top Rated
                             <FaStar className="text-2xl" />
                         </button>
@@ -130,7 +123,7 @@ const Home = () => {
                             onClick={() => {
                                 navigate("/search?sort=createdAt");
                             }}
-                            className="xxsm:text-sm flex flex-1 items-center justify-around gap-x-1 border-x border-white bg-slate-400 p-2 py-1 text-[8px] text-white transition-all duration-150 hover:scale-105 sm:text-lg">
+                            className="xxsm:text-sm  border-white bg-slate-400 p-2 py-1 text-[8px] text-white transition-all duration-150 hover:bg-gray-600 sm:text-lg">
                             Latest
                             <FaCalendar className="text-lg" />
                         </button>
@@ -138,7 +131,7 @@ const Home = () => {
                             onClick={() => {
                                 navigate("/search?sort=packageTotalRatings");
                             }}
-                            className="xxsm:text-sm flex flex-1 items-center justify-around gap-x-1 rounded-e-full border-s border-white bg-slate-400 p-2 py-1 text-[8px] text-white transition-all duration-150 hover:scale-105 sm:text-lg">
+                            className="xxsm:text-sm rounded-e-md  border-white bg-slate-400 p-2 py-1 text-[8px] text-white transition-all duration-150 hover:bg-gray-600 sm:text-lg">
                             Most Rated
                             <FaRankingStar className="text-2xl" />
                         </button>
