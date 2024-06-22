@@ -78,9 +78,12 @@ export const loginController = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production', // Only true in production
             sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // None for cross-site in production, Lax for local
-            domain: process.env.NODE_ENV === 'production' ? process.env.server : undefined, // undefined for local development
+            domain:
+                process.env.NODE_ENV === 'production'
+                    ? process.env.server
+                    : undefined, // undefined for local development
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // expiry after 7 days
-        };
+        }
         // console.log(cookieOptions);
         res.cookie('access_token', token, cookieOptions)
         // console.dir(req.cookies.access_token)
@@ -88,13 +91,13 @@ export const loginController = async (req, res) => {
             success: true,
             message: 'Login Success',
             user: rest,
-            cookieOptions // remove this 
-        });
+            cookieOptions, // remove this
+        })
     } catch (error) {
         console.log(error)
         return res.status(501).json({
             success: false,
-            message: error.message | " Server error! Failed to login"
+            message: error.message | ' Server error! Failed to login',
         })
     }
 }
@@ -110,7 +113,7 @@ export const logOutController = (req, res) => {
         console.log(error)
         return res.status(501).json({
             success: false,
-            message: error.message | "Server error! Failed to logout"
+            message: error.message | 'Server error! Failed to logout',
         })
     }
 }

@@ -47,8 +47,7 @@ export const updateProfilePhoto = async (req, res) => {
         if (req.user.id !== req.params.id) {
             return res.status(401).json({
                 success: false,
-                message:
-                    'Invalid Request!',
+                message: 'Invalid Request!',
             })
         }
 

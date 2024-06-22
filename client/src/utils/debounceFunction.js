@@ -5,14 +5,14 @@
  * @returns {Function} - The debounced function.
  */
 export default function debounce(func, delay = 400) {
-    let timeoutId;
+  let timeoutId;
 
-    return function () {
-        const context = this;
-        const args = arguments;
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-            func.apply(context, args);
-        }, delay);
-    };
+  return function () {
+    const context = this;
+    const args = arguments;
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func.apply(context, args);
+    }, delay);
+  };
 }

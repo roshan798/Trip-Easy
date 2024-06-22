@@ -90,52 +90,74 @@ export const createPackage = async (req, res) => {
 // Get all packages endpoint
 export const getPackages = async (req, res) => {
     try {
-        const searchTerm = req.query.searchTerm || '';
-        const limit = parseInt(req.query.limit) || 20;
-        const startIndex = parseInt(req.query.startIndex) || 0;
+        const searchTerm = req.query.searchTerm || ''
+        const resultsPerPage = parseInt(req.query.resultsPerPage) || 10
+        const page = parseInt(req.query.page) || 0
 
-        let offer = req.query.offer;
+        let offer = req.query.offer
         if (offer === undefined || offer === 'false') {
-            offer = { $in: [false, true] };
+            offer = { $in: [false, true] }
         } else {
-            offer = 'true';
+            offer = true
         }
 
-        const sort = req.query.sort || 'createdAt';
-        const order = req.query.order || 'desc';
+        const sort = req.query.sort || 'createdAt'
+        const order = req.query.order || 'desc'
 
         // Prepare search query
         const querySearch = {
             $and: [
-                { "keywords": { "$regex": searchTerm, "$options": 'i' } },
-                { "packageOffer": offer }
-            ]
-        };
-        // Find packages based on search criteria
-        const packages = await Package.find(querySearch)
-            .sort({ [sort]: order })
-            .skip(startIndex)
-            .limit(limit);
+                { keywords: { $regex: searchTerm, $options: 'i' } },
+                { packageOffer: offer },
+            ],
+        }
+
+        // Use aggregate to count and fetch data in a single query
+        const aggregateQuery = [
+            { $match: querySearch },
+            {
+                $facet: {
+                    totalCount: [{ $count: 'count' }],
+                    packages: [
+                        { $sort: { [sort]: order === 'asc' ? 1 : -1 } },
+                        { $skip: page * resultsPerPage },
+                        { $limit: resultsPerPage },
+                    ],
+                },
+            },
+        ]
+
+        const result = await Package.aggregate(aggregateQuery)
+        const totalResults = result[0]?.totalCount[0]?.count || 0
+        const packages = result[0]?.packages || []
 
         if (packages.length > 0) {
             return res.status(200).send({
                 success: true,
                 packages,
-            });
+                totalResults,
+                currentPage: page,
+                resultsPerPage,
+            })
         } else {
             return res.status(404).send({
                 success: false,
                 message: 'No Packages found',
-            });
+                totalResults: 0,
+                currentPage: page,
+                resultsPerPage,
+            })
         }
     } catch (error) {
-        console.log(error);
+        console.log(error)
         return res.status(500).send({
             success: false,
             message: 'Internal Server Error',
-        });
+        })
     }
-};//get package data
+}
+
+//get package data
 export const getPackageData = async (req, res) => {
     try {
         const packageData = await Package.findById(req?.params?.id)
@@ -169,7 +191,8 @@ export const updatePackage = async (req, res) => {
             })
         }
 
-        const keywords = `${req.body.packageName || findPackage.packageName} ${req.body.packageDescription || findPackage.packageDescription} ${req.body.packageDestination || findPackage.packageDestination} ${req.body.packageAccommodation || findPackage.packageAccommodation} ${req.body.packageTransportation || findPackage.packageTransportation} ${req.body.packageMeals || findPackage.packageMeals} ${req.body.packageActivities || findPackage.packageActivities}`.toLowerCase();
+        const keywords =
+            `${req.body.packageName || findPackage.packageName} ${req.body.packageDescription || findPackage.packageDescription} ${req.body.packageDestination || findPackage.packageDestination} ${req.body.packageAccommodation || findPackage.packageAccommodation} ${req.body.packageTransportation || findPackage.packageTransportation} ${req.body.packageMeals || findPackage.packageMeals} ${req.body.packageActivities || findPackage.packageActivities}`.toLowerCase()
 
         const updatedPackage = await Package.findByIdAndUpdate(
             req.params.id,

@@ -30,7 +30,6 @@ export const requireSignIn = async (req, res, next) => {
 
 //Admin access
 export const isAdmin = async (req, res, next) => {
-
     try {
         const user = await User.findById(req.user.id)
         if (user.user_role === 1) {

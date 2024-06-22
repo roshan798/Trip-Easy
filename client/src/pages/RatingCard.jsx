@@ -4,7 +4,7 @@ import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 const RatingCard = ({ packageRatings }) => {
   return (
     <>
-      {packageRatings.length>0 &&
+      {packageRatings.length > 0 &&
         packageRatings.map((rating, i) => {
           return (
             <div
