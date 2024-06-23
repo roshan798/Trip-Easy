@@ -111,7 +111,7 @@ const Search = () => {
 
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="border-b-2 p-7 md:min-h-screen md:border-r-2">
+      <div className="border-b-2 h-screen sticky top-0 left-0 p-7 md:min-h-screen md:border-r-2">
         <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
           <div className="flex items-center gap-2">
             <label className="whitespace-nowrap font-semibold">Search:</label>
@@ -178,14 +178,14 @@ const Search = () => {
               <PackageCard key={i} packageData={packageData} />
             ))}
         </div>
-        {showMoreBtn && (
+        {/* {showMoreBtn && (
           <button
             onClick={onShowMoreSClick}
             className="m-3 w-max rounded bg-green-700 p-2 text-center text-sm text-white hover:underline"
           >
             Show More
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );
