@@ -53,11 +53,10 @@ const Login = () => {
             className="flex items-center justify-center"
             style={{
                 width: "100%",
-                height: "calc(100vh - 80px)",
+                height: "calc(100vh - 4rem)",
                 background:
                     "linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)",
             }}>
-            <div className="absolute inset-0 bg-black opacity-40 backdrop-blur-sm"></div>
             <form
                 onSubmit={handleSubmit}
                 className="relative bg-white p-6 rounded-lg shadow-lg w-80 sm:w-96">
