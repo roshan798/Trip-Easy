@@ -1,97 +1,108 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  loginStart,
-  loginSuccess,
-  loginFailure,
+    loginStart,
+    loginSuccess,
+    loginFailure,
 } from "../redux/user/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../http/index.js";
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { loading, error } = useSelector((state) => state.user);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value,
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { loading, error } = useSelector((state) => state.user);
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
     });
-  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      dispatch(loginStart());
-      const { data } = await login(formData);
-      if (data?.success) {
-        dispatch(loginSuccess(data?.user));
-        alert(data?.message);
-        navigate("/");
-      } else {
-        dispatch(loginFailure(data?.message));
-        alert(data?.message);
-      }
-    } catch (error) {
-      dispatch(loginFailure(error.message));
-      console.log(error);
-    }
-  };
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.id]: e.target.value,
+        });
+    };
 
-  return (
-    <div
-      className="flex items-center justify-center"
-      style={{
-        width: "100%",
-        height: "90vh",
-        background:
-          "linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)",
-      }}
-    >
-      <form onSubmit={handleSubmit}>
-        <div className="flex h-fit w-72 flex-col gap-5 rounded-lg border border-black bg-white bg-opacity-60 p-4 sm:w-[320px]">
-          <h1 className="text-center text-3xl font-semibold">Login</h1>
-          <div className="flex flex-col">
-            <label htmlFor="email" className="font-semibold">
-              Email:
-            </label>
-            <input
-              type="email"
-              id="email"
-              className="rounded border border-black bg-white bg-opacity-80 p-3"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="password" className="font-semibold">
-              Password:
-            </label>
-            <input
-              type="password"
-              id="password"
-              className="rounded border border-black bg-white bg-opacity-80 p-3"
-              onChange={handleChange}
-            />
-          </div>
-          <p className="text-sm text-blue-700 hover:underline">
-            <Link to={`/signup`}>Dont have an account? Signup</Link>
-          </p>
-          <button
-            disabled={loading}
-            className="rounded bg-slate-700 p-3 text-white hover:opacity-95"
-          >
-            {loading ? "Loading..." : "Login"}
-          </button>
-          {error && <p className="text-sm text-red-600">{error}</p>}
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            dispatch(loginStart());
+            const { data } = await login(formData);
+            if (data?.success) {
+                dispatch(loginSuccess(data?.user));
+                alert(data?.message);
+                navigate("/");
+            } else {
+                dispatch(loginFailure(data?.message));
+                alert(data?.message);
+            }
+        } catch (error) {
+            dispatch(loginFailure(error.message));
+            console.log(error);
+        } finally {
+            setFormData({
+                email: "",
+                password: "",
+            });
+        }
+    };
+
+    return (
+        <div
+            className="flex items-center justify-center"
+            style={{
+                width: "100%",
+                height: "calc(100vh - 80px)",
+                background:
+                    "linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)",
+            }}>
+            <div className="absolute inset-0 bg-black opacity-40 backdrop-blur-sm"></div>
+            <form
+                onSubmit={handleSubmit}
+                className="relative bg-white p-6 rounded-lg shadow-lg w-80 sm:w-96">
+                <h2 className="text-3xl font-bold mb-6 text-center">Login</h2>
+                {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+                <div className="mb-4">
+                    <label
+                        htmlFor="email"
+                        className="block text-sm font-medium text-gray-800">
+                        Email
+                    </label>
+                    <input
+                        type="email"
+                        id="email"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="mb-6">
+                    <label
+                        htmlFor="password"
+                        className="block text-sm font-medium text-gray-800">
+                        Password
+                    </label>
+                    <input
+                        type="password"
+                        id="password"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <button
+                    type="submit"
+                    className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    disabled={loading}>
+                    {loading ? "Loading..." : "Login"}
+                </button>
+                <p className="text-sm text-blue-700 mt-4 text-center hover:underline">
+                    <Link to="/signup">Don't have an account? Signup</Link>
+                </p>
+            </form>
         </div>
-      </form>
-    </div>
-  );
+    );
 };
 
 export default Login;
