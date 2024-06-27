@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signup } from "../http";
-import useNotification from "../hooks/useNotification.js";
+import { useNotification } from "../hooks/useNotification.js";
 
 const Signup = () => {
   const navigate = useNavigate();

@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  loginStart,
-  loginSuccess,
-  loginFailure,
-} from "../redux/user/userSlice.js";
+import { loginStart } from "../redux/user/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../http/index.js";
 import { useNotification } from "../hooks/useNotification.js";
