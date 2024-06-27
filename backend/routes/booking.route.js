@@ -9,12 +9,13 @@ import {
     getUserCurrentBookings,
 } from '../controllers/booking.controller.js'
 import { isAdmin, requireSignIn } from '../middlewares/authMiddleware.js'
+import PaymentController from '../controllers/Payment.controller.js'
 
 const router = express.Router()
 
 // book package
 router.post('/book-package/:packageId', requireSignIn, bookPackage)
-
+router.post("/checkout", requireSignIn, PaymentController.processPayment)
 //get all current bookings admin
 router.get('/get-currentBookings', requireSignIn, isAdmin, getCurrentBookings)
 

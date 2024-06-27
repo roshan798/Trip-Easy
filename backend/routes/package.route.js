@@ -1,13 +1,13 @@
 import express from 'express'
 import { isAdmin, requireSignIn } from '../middlewares/authMiddleware.js'
 import {
-    braintreeTokenController,
     createPackage,
     deletePackage,
     getPackageData,
     getPackages,
     updatePackage,
 } from '../controllers/package.controller.js'
+import PaymentController from '../controllers/Payment.controller.js'
 
 const router = express.Router()
 
@@ -28,6 +28,7 @@ router.get('/get-package-data/:id', getPackageData)
 
 //payments routes
 //token
-router.get('/braintree/token', braintreeTokenController)
+router.get('/braintree/token', PaymentController.getToken)
 
+router.post("/braintree/payment", requireSignIn, PaymentController.processPayment)
 export default router

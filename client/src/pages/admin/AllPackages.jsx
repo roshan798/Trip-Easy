@@ -5,6 +5,7 @@ import {
     deletePackage,
 } from "../../http/index.js";
 import debounce from "../../utils/debounceFunction.js";
+import Loader from "../components/shared/Loader.jsx";
 
 const AllPackages = () => {
     const [packages, setPackages] = useState([]);
@@ -63,9 +64,10 @@ const AllPackages = () => {
             const data = await deletePackage(packageId);
             alert(data?.message);
             getPackages(currentPage);
-            setLoading(false);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -75,7 +77,7 @@ const AllPackages = () => {
 
     return (
         <>
-            <div className="flex w-full flex-col justify-center gap-2 rounded-lg p-5 shadow-xl">
+            <div className="flex w-full flex-col justify-center gap-2 rounded-lg p-5 shadow-xl relative">
                 <div className="flex items-center justify-between">
                     <input
                         className="rounded border p-2"
@@ -133,62 +135,80 @@ const AllPackages = () => {
                         </li>
                     </ul>
                 </div>
-                {loading && <h1 className="text-center text-lg">Loading...</h1>}
-                {packages ? (
-                    packages.map((pack, i) => (
-                        <div
-                            className=" hover:bg-gray-600/10 flex w-full items-center justify-between rounded-lg border p-3 transition-all duration-300 cursor-pointer"
-                            key={i}>
-                            <Link to={`/package/${pack._id}`}>
-                                <img
-                                    src={pack?.packageImages[0]}
-                                    alt="image"
-                                    className="h-20 w-20 rounded"
-                                />
-                            </Link>
-                            <Link to={`/package/${pack._id}`}>
-                                <p className="font-semibold hover:underline">
-                                    {pack?.packageName}
-                                </p>
-                            </Link>
-                            <div className="flex flex-row gap-2 items-center ">
-                                <Link
-                                    to={`/profile/admin/update-package/${pack._id}`}>
-                                    <button
-                                        disabled={loading}
-                                        className="text-blue-600 border-blue-600 bg-blue-600/15 hover:underline px-3 py-1 rounded-md border">
-                                        {loading ? "Loading..." : "Edit"}
-                                    </button>
-                                </Link>
-                                <button
-                                    disabled={loading}
-                                    onClick={() => handleDelete(pack?._id)}
-                                    className="text-red-600 border-red-600 bg-red-600/15 hover:underline px-3 py-1 rounded-md border">
-                                    {loading ? "Loading..." : "Delete"}
-                                </button>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <h1 className="text-center text-2xl">No Packages Yet!</h1>
-                )}
 
-                {/* Pagination */}
-                <div
-                    id="pagi"
-                    className="flex justify-center mt-4">
-                    {Array.from({ length: totalPages }, (_, index) => (
-                        <button
-                            key={index}
-                            className={`mx-1 px-3 py-1 border rounded ${
-                                currentPage === index
-                                    ? "bg-blue-500 text-white"
-                                    : "bg-white"
-                            }`}
-                            onClick={() => handlePageChange(index)}>
-                            {index + 1}
-                        </button>
-                    ))}
+                <div className="relative min-h-24 flex flex-col gap-3">
+                    {loading && <Loader />}
+                    {packages ? (
+                        <>
+                            {packages.map((pack, i) => (
+                                <div
+                                    className=" hover:bg-gray-600/10 flex w-full items-center justify-between rounded-lg border p-3 transition-all duration-300 cursor-pointer"
+                                    key={i}>
+                                    <div className="flex items-center justify-start gap-3">
+                                        <span>{i + 1}</span>
+                                        <Link to={`/package/${pack._id}`}>
+                                            <img
+                                                src={pack?.packageImages[0]}
+                                                alt="image"
+                                                className="h-20 w-20 rounded"
+                                            />
+                                        </Link>
+                                    </div>
+                                    <Link to={`/package/${pack._id}`}>
+                                        <p className="font-semibold hover:underline">
+                                            {pack?.packageName}
+                                        </p>
+                                    </Link>
+                                    <div className="flex flex-row gap-2 items-center ">
+                                        <Link
+                                            to={`/profile/admin/update-package/${pack._id}`}>
+                                            <button
+                                                disabled={loading}
+                                                className="text-blue-600 border-blue-600 bg-blue-600/15 hover:underline px-3 py-1 rounded-md border">
+                                                {loading
+                                                    ? "Loading..."
+                                                    : "Edit"}
+                                            </button>
+                                        </Link>
+                                        <button
+                                            disabled={loading}
+                                            onClick={() =>
+                                                handleDelete(pack?._id)
+                                            }
+                                            className="text-red-600 border-red-600 bg-red-600/15 hover:underline px-3 py-1 rounded-md border">
+                                            {loading ? "Loading..." : "Delete"}
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                            {/* pagination */}
+                            {!loading && (
+                                <div className="flex justify-center mt-4">
+                                    {Array.from(
+                                        { length: totalPages },
+                                        (_, index) => (
+                                            <button
+                                                key={index}
+                                                className={`mx-1 px-3 py-1 border rounded ${
+                                                    currentPage === index
+                                                        ? "bg-blue-500 text-white"
+                                                        : "bg-white"
+                                                }`}
+                                                onClick={() =>
+                                                    handlePageChange(index)
+                                                }>
+                                                {index + 1}
+                                            </button>
+                                        )
+                                    )}
+                                </div>
+                            )}
+                        </>
+                    ) : (
+                        <h1 className="text-center text-2xl">
+                            No Packages Yet!
+                        </h1>
+                    )}
                 </div>
             </div>
         </>
