@@ -10,12 +10,14 @@ import {
   updatePassFailure,
 } from "../../redux/user/userSlice";
 import { updateUser, updatePassword as updateAdminPassword } from "../../http";
+import { useNotification } from "../../hooks/useNotification.js";
 
 const AdminUpdateProfile = () => {
   const { currentUser, error } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const showNotification = useNotification();
   const [updateProfileDetailsPanel, setUpdateProfileDetailsPanel] =
     useState(true);
   const [formData, setFormData] = useState({
@@ -61,7 +63,7 @@ const AdminUpdateProfile = () => {
       currentUser.address === formData.address &&
       currentUser.phone === formData.phone
     ) {
-      alert("Change atleast 1 field to update details");
+      showNotification("Change at least one field to update details", "error");
       return;
     }
     try {
@@ -72,19 +74,17 @@ const AdminUpdateProfile = () => {
         formData: formData,
       });
       if (data.success === false) {
-        dispatch(updateUserSuccess());
-        dispatch(updateUserFailure(data?.messsage));
-        alert("Session Ended! Please login again");
+        dispatch(updateUserFailure(data?.message));
+        showNotification("Session Ended! Please login again", "error");
         navigate("/login");
         return;
       }
       if (data.success) {
-        alert(data?.message);
+        showNotification(data?.message, "success");
         dispatch(updateUserSuccess(data?.user));
         return;
       }
-      alert(data?.message);
-      return;
+      showNotification(data?.message, "error");
     } catch (error) {
       console.log(error);
     } finally {
@@ -98,11 +98,11 @@ const AdminUpdateProfile = () => {
       updatePassword.oldpassword === "" ||
       updatePassword.newpassword === ""
     ) {
-      alert("Enter a valid password");
+      showNotification("Enter a valid password", "error");
       return;
     }
     if (updatePassword.oldpassword === updatePassword.newpassword) {
-      alert("New password can't be same!");
+      showNotification("New password can't be the same!", "error");
       return;
     }
     try {
@@ -112,19 +112,17 @@ const AdminUpdateProfile = () => {
         updatePassword,
       });
       if (data.success === false) {
-        dispatch(updateUserSuccess());
         dispatch(updatePassFailure(data?.message));
-        alert("Session Ended! Please login again");
+        showNotification("Session Ended! Please login again", "error");
         navigate("/login");
         return;
       }
       dispatch(updatePassSuccess());
-      alert(data?.message);
+      showNotification(data?.message, "success");
       setUpdatePassword({
         oldpassword: "",
         newpassword: "",
       });
-      return;
     } catch (error) {
       dispatch(updatePassFailure(error.message));
       console.log(error);
@@ -197,11 +195,11 @@ const AdminUpdateProfile = () => {
             Change Password
           </h1>
           <div className="flex flex-col">
-            <label htmlFor="username" className="font-semibold">
+            <label htmlFor="oldpassword" className="font-semibold">
               Enter old password:
             </label>
             <input
-              type="text"
+              type="password"
               id="oldpassword"
               className="rounded border border-black p-1"
               value={updatePassword.oldpassword}
@@ -209,11 +207,11 @@ const AdminUpdateProfile = () => {
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="username" className="font-semibold">
+            <label htmlFor="newpassword" className="font-semibold">
               Enter new password:
             </label>
             <input
-              type="text"
+              type="password"
               id="newpassword"
               className="rounded border border-black p-1"
               value={updatePassword.newpassword}

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import PackageCard from "./PackageCard";
 import { getPackages } from "../http";
 
+const RESULT_PER_PAGE = 8;
 const Search = () => {
   const navigate = useNavigate();
   const [sideBarSearchData, setSideBarSearchData] = useState({
@@ -13,8 +14,8 @@ const Search = () => {
   });
   const [loading, setLoading] = useState(false);
   const [allPackages, setAllPackages] = useState([]);
-  const [showMoreBtn, setShowMoreBtn] = useState(false);
-  //   console.log(listings);
+  const [page, setPage] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -34,20 +35,18 @@ const Search = () => {
 
     const fetchAllPackages = async () => {
       setLoading(true);
-      setShowMoreBtn(false);
       try {
         const searchQuery = urlParams.toString();
         const queryParams = {
           searchQuery: searchQuery,
+          page: 1,
+          resultsPerPage: RESULT_PER_PAGE,
         };
         const { data } = await getPackages(queryParams);
 
         setAllPackages(data?.packages);
-        if (data?.packages?.length > 8) {
-          setShowMoreBtn(true);
-        } else {
-          setShowMoreBtn(false);
-        }
+        setTotalResults(data?.totalResults);
+        setPage(1);
       } catch (error) {
         console.log(error);
       } finally {
@@ -73,9 +72,7 @@ const Search = () => {
     }
     if (e.target.id === "sort_order") {
       const sort = e.target.value.split("_")[0] || "created_at";
-
       const order = e.target.value.split("_")[1] || "desc";
-
       setSideBarSearchData({ ...sideBarSearchData, sort, order });
     }
   };
@@ -92,26 +89,31 @@ const Search = () => {
     navigate(`/search?${searchQuery}`);
   };
 
-  const onShowMoreSClick = async () => {
-    const numberOfPackages = allPackages.length;
-    const startIndex = numberOfPackages;
-    const urlParams = new URLSearchParams(location.search);
-    urlParams.set("startIndex", startIndex);
-    const searchQuery = urlParams.toString();
-    // const res = await fetch(`/api/package/get-packages?${searchQuery}`);
-    const queryParams = {
-      searchQuery: searchQuery,
-    };
-    const { data } = await getPackages(queryParams);
-    if (data?.packages?.length < 9) {
-      setShowMoreBtn(false);
+  const onShowMoreClick = async () => {
+    setLoading(true);
+    try {
+      const nextPage = page + 1;
+      const urlParams = new URLSearchParams(location.search);
+      const searchQuery = urlParams.toString();
+      const queryParams = {
+        searchQuery: searchQuery,
+        page: nextPage,
+        resultsPerPage: RESULT_PER_PAGE,
+      };
+      const { data } = await getPackages(queryParams);
+
+      setAllPackages([...allPackages, ...data?.packages]);
+      setPage(nextPage);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-    setAllPackages([...allPackages, ...data?.packages]);
   };
 
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="border-b-2 h-screen sticky top-0 left-0 p-7 md:min-h-screen md:border-r-2">
+      <div className="border-b-2 md:h-screen md:sticky top-0 left-0 p-7 md:min-h-screen md:border-r-2">
         <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
           <div className="flex items-center gap-2">
             <label className="whitespace-nowrap font-semibold">Search:</label>
@@ -167,25 +169,28 @@ const Search = () => {
           {!loading && allPackages.length === 0 && (
             <p className="text-xl text-slate-700">No Packages Found!</p>
           )}
-          {loading && (
-            <p className="w-full text-center text-xl text-slate-700">
-              Loading...
-            </p>
-          )}
+
           {!loading &&
             allPackages &&
             allPackages.map((packageData, i) => (
               <PackageCard key={i} packageData={packageData} />
             ))}
+          {loading && (
+            <p className="w-full text-center text-xl text-slate-700">
+              Loading...
+            </p>
+          )}
         </div>
-        {/* {showMoreBtn && (
-          <button
-            onClick={onShowMoreSClick}
-            className="m-3 w-max rounded bg-green-700 p-2 text-center text-sm text-white hover:underline"
-          >
-            Show More
-          </button>
-        )} */}
+        {allPackages.length < totalResults && (
+          <div className="w-full border p-5 flex justify-center">
+            <button
+              onClick={onShowMoreClick}
+              className="w-max rounded bg-green-700 p-2 text-center text-sm text-white hover:underline"
+            >
+              Show More
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

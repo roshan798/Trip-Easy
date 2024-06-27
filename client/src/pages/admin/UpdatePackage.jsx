@@ -8,10 +8,12 @@ import {
 } from "firebase/storage";
 import { useNavigate, useParams } from "react-router";
 import { getPackage, updatePackage } from "../../http";
+import { useNotification } from "../../hooks/useNotification";
 
 const UpdatePackage = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const notify = useNotification();
   const [formData, setFormData] = useState({
     packageName: "",
     packageDescription: "",
@@ -59,7 +61,7 @@ const UpdatePackage = () => {
             packageImages: data?.packageData?.packageImages,
           });
         } else {
-          alert(data?.message || "Something went wrong!");
+          notify(data?.message || "Something went wrong!", "error");
         }
       } catch (error) {
         console.log(error);
@@ -97,14 +99,17 @@ const UpdatePackage = () => {
           console.log(formData);
           setImageUploadError(false);
           setUploading(false);
+          notify("Images uploaded successfully!", "success");
         })
         .catch((err) => {
           setImageUploadError("Image upload failed (2mb max per image)");
           setUploading(false);
+          notify("Image upload failed (2mb max per image)", "warning");
         });
     } else {
       setImageUploadError("You can only upload 5 images per package");
       setUploading(false);
+      notify("You can only upload 5 images per package", "warning");
     }
   };
 
@@ -138,12 +143,13 @@ const UpdatePackage = () => {
       ...formData,
       packageImages: formData.packageImages.filter((_, i) => i !== index),
     });
+    notify("Image deleted successfully!", "success");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.packageImages.length === 0) {
-      alert("You must upload atleast 1 image");
+      notify("You must upload at least 1 image", "error");
       return;
     }
     if (
@@ -156,15 +162,15 @@ const UpdatePackage = () => {
       formData.packageActivities === "" ||
       formData.packagePrice === 0
     ) {
-      alert("All fields are required!");
+      notify("All fields are required!", "error");
       return;
     }
-    if (formData.packagePrice < 0) {
-      alert("Price should be greater than 500!");
+    if (formData.packagePrice < 500) {
+      notify("Price should be greater than 500!", "error");
       return;
     }
     if (formData.packageDiscountPrice >= formData.packagePrice) {
-      alert("Regular Price should be greater than Discount Price!");
+      notify("Regular Price should be greater than Discount Price!", "error");
       return;
     }
     if (formData.packageOffer === false) {
@@ -180,13 +186,16 @@ const UpdatePackage = () => {
       if (data?.success === false) {
         setError(data?.message);
         setLoading(false);
+        notify(data?.message, "error");
+      } else {
+        setLoading(false);
+        setError(false);
+        notify(data?.message || "Package updated successfully", "success");
+        navigate(`/package/${params?.id}`);
       }
-      setLoading(false);
-      setError(false);
-      alert(data?.message);
-      navigate(`/package/${params?.id}`);
     } catch (err) {
       console.log(err);
+      notify("An error occurred while updating the package.", "error");
     }
   };
 

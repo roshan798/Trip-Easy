@@ -13,11 +13,13 @@ import {
   updatePassword as updateUserPasswordAPI,
   updateUser,
 } from "../../http/index.js";
+import { useNotification } from "../../hooks/useNotification.js";
 
 const UpdateProfile = () => {
   const navigate = useNavigate();
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const showNotification = useNotification();
   const [updateProfileDetailsPanel, setUpdateProfileDetailsPanel] =
     useState(true);
   const [formData, setFormData] = useState({
@@ -66,36 +68,27 @@ const UpdateProfile = () => {
       currentUser.address === formData.address &&
       currentUser.phone === formData.phone
     ) {
-      alert("Change atleast 1 field to update details");
+      showNotification("Change at least one field to update details", "error");
       return;
     }
     try {
       dispatch(updateUserStart());
-      // const res = await fetch(`/api/user/update/${currentUser._id}`, {
-      //     method: "POST",
-      //     headers: {
-      //         "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(formData),
-      // });
       const { data } = await updateUser({
         userId: currentUser._id,
         formData: formData,
       });
       if (data.success === false) {
-        dispatch(updateUserSuccess());
-        dispatch(updateUserFailure(data?.messsage));
-        alert("Session Ended! Please login again");
+        dispatch(updateUserFailure(data?.message));
+        showNotification("Session Ended! Please login again", "error");
         navigate("/login");
         return;
       }
       if (data.success) {
-        alert(data?.message);
+        showNotification(data?.message, "success");
         dispatch(updateUserSuccess(data?.user));
         return;
       }
-      alert(data?.message);
-      return;
+      showNotification(data?.message, "error");
     } catch (error) {
       console.log(error);
     }
@@ -107,45 +100,32 @@ const UpdateProfile = () => {
       updatePassword.oldpassword === "" ||
       updatePassword.newpassword === ""
     ) {
-      alert("Enter a valid password");
+      showNotification("Enter a valid password", "error");
       return;
     }
     if (updatePassword.oldpassword === updatePassword.newpassword) {
-      alert("New password can't be same!");
+      showNotification("New password can't be the same!", "error");
       return;
     }
     try {
       dispatch(updatePassStart());
-      // const res = await fetch(
-      //     `/api/user/update-password/${currentUser._id}`,
-      //     {
-      //         method: "POST",
-      //         headers: {
-      //             "Content-Type": "application/json",
-      //         },
-      //         body: JSON.stringify(updatePassword),
-      //     }
-      // );
-      // const userId = currentUser._id;
       const formData = {
         userId: currentUser._id,
         updatePassword: updatePassword,
       };
       const { data } = await updateUserPasswordAPI(formData);
       if (data.success === false) {
-        dispatch(updateUserSuccess());
         dispatch(updatePassFailure(data?.message));
-        alert("Session Ended! Please login again");
+        showNotification("Session Ended! Please login again", "error");
         navigate("/login");
         return;
       }
       dispatch(updatePassSuccess());
-      alert(data?.message);
+      showNotification(data?.message, "success");
       setUpdatePassword({
         oldpassword: "",
         newpassword: "",
       });
-      return;
     } catch (error) {
       console.log(error);
     }
@@ -229,11 +209,11 @@ const UpdateProfile = () => {
             Change Password
           </h1>
           <div className="flex flex-col">
-            <label htmlFor="username" className="font-semibold">
+            <label htmlFor="oldpassword" className="font-semibold">
               Enter old password:
             </label>
             <input
-              type="text"
+              type="password"
               id="oldpassword"
               className="rounded border border-black p-1"
               value={updatePassword.oldpassword}
@@ -241,11 +221,11 @@ const UpdateProfile = () => {
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="username" className="font-semibold">
+            <label htmlFor="newpassword" className="font-semibold">
               Enter new password:
             </label>
             <input
-              type="text"
+              type="password"
               id="newpassword"
               className="rounded border border-black p-1"
               value={updatePassword.newpassword}

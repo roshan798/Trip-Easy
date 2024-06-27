@@ -4,7 +4,6 @@ import { ObjectId } from 'mongodb'
 
 //book package
 export const bookPackage = async (req, res) => {
-    
     try {
         const { packageDetails, buyer, totalPrice, persons, date } = req.body
 

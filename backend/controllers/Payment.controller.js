@@ -28,19 +28,22 @@ class PaymentController {
         try {
             const nonceFromTheClient = req.body.paymentMethodNonce
             const amountFromTheClient = req.body.amount
-            gateway.transaction.sale({
-                amount: amountFromTheClient,
-                paymentMethodNonce: nonceFromTheClient,
-                options: {
-                    submitForSettlement: true
+            gateway.transaction.sale(
+                {
+                    amount: amountFromTheClient,
+                    paymentMethodNonce: nonceFromTheClient,
+                    options: {
+                        submitForSettlement: true,
+                    },
+                },
+                function (err, result) {
+                    if (err) {
+                        res.status(500).send(err)
+                    } else {
+                        res.send(result)
+                    }
                 }
-            }, function (err, result) {
-                if (err) {
-                    res.status(500).send(err)
-                } else {
-                    res.send(result)
-                }
-            })
+            )
         } catch (error) {
             console.log(error)
             return res.status(500).send({
@@ -48,7 +51,6 @@ class PaymentController {
                 message: 'Internal Server Error',
             })
         }
-
     }
 }
 export default new PaymentController()

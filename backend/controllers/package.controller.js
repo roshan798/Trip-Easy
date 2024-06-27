@@ -3,7 +3,6 @@ import dotenv from 'dotenv'
 // import Booking from "../models/booking.model.js";
 dotenv.config()
 
-
 //create package
 export const createPackage = async (req, res) => {
     try {
@@ -222,4 +221,3 @@ export const deletePackage = async (req, res) => {
         })
     }
 }
-
