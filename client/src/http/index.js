@@ -327,5 +327,13 @@ export const deleteHistory = (queryParams) => {
 export const getBraintreeToken = () => {
   return api.get("/api/package/braintree/token");
 };
+export const makePayment = () => {
+  return api.post("/api/package/braintree/payment",
+    {
+      "amount": 100,
+      "payment_method_nonce": "fake-valid-nonce"
+    }
+  );
+}
 
 export default api;

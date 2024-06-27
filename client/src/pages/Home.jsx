@@ -77,10 +77,10 @@ const Home = () => {
     };
 
     useEffect(() => {
-        const helper = async () => {
-            await getTopPackages();
-            await getLatestPackages();
-            await getOfferPackages();
+        const helper =  () => {
+            getTopPackages();
+            getLatestPackages();
+            getOfferPackages();
         };
         helper();
     }, []);
