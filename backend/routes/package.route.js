@@ -30,5 +30,9 @@ router.get('/get-package-data/:id', getPackageData)
 //token
 router.get('/braintree/token', PaymentController.getToken)
 
-router.post("/braintree/payment", requireSignIn, PaymentController.processPayment)
+router.post(
+    '/braintree/payment',
+    requireSignIn,
+    PaymentController.processPayment
+)
 export default router

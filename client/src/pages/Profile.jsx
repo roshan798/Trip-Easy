@@ -23,11 +23,13 @@ import MyBookings from "./user/MyBookings";
 import UpdateProfile from "./user/UpdateProfile";
 import MyHistory from "./user/MyHistory";
 import { deleteUser, logout, updateProfilePicture } from "../http";
+import { useNotification } from "../hooks/useNotification";
 
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const fileRef = useRef(null);
+  const showNotification = useNotification();
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const [profilePhoto, setProfilePhoto] = useState(undefined);
   const [photoPercentage, setPhotoPercentage] = useState(0);
@@ -81,7 +83,7 @@ const Profile = () => {
               },
             });
             if (data?.success) {
-              alert(data?.message);
+              showNotification(data.message, "success");
               setFormData({
                 ...formData,
                 avatar: downloadUrl,
@@ -93,7 +95,7 @@ const Profile = () => {
               dispatch(updateUserFailure(data?.message));
             }
             dispatch(updateUserFailure(data?.message));
-            alert(data?.message);
+            showNotification(data.message, "error");
           });
         },
       );
@@ -112,7 +114,7 @@ const Profile = () => {
       }
       dispatch(logOutSuccess());
       navigate("/login");
-      alert(data?.message);
+      showNotification(data.message, "success");
     } catch (error) {
       console.log(error);
       dispatch(logOutFailure(error?.message));
@@ -132,11 +134,11 @@ const Profile = () => {
         const { data } = await deleteUser(userId);
         if (data?.success === false) {
           dispatch(deleteUserAccountFailure(data?.message));
-          alert("Something went wrong!");
+          showNotification("Something went wrong!", "error");
           return;
         }
         dispatch(deleteUserAccountSuccess());
-        alert(data?.message);
+        showNotification(data.message, "success");
       } catch (error) {
         console.log(error);
         dispatch(deleteUserAccountFailure(error?.message));

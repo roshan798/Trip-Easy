@@ -148,14 +148,16 @@ export const getPackages = (queryParams) => {
   if (searchQuery) {
     url += `${searchQuery}&`;
   }
-  // add the page and resultsPerPage to the url query
-  // if (page && resultsPerPage) {
-  url += `page=${page}&resultsPerPage=${resultsPerPage}&`;
-  // }
-  if (sortBy || limit || offer || startIndex) {
-    url += `sort=${sortBy}&limit=${limit}&offer=${offer}&startIndex=${startIndex}`;
-  }
-  return api.get(url);
+  return api.get(url, {
+    params: {
+      page,
+      resultsPerPage,
+      sortBy,
+      limit,
+      offer,
+      startIndex,
+    },
+  });
 };
 
 /**
@@ -278,14 +280,15 @@ export const getAllBookings = (queryParams) => {
     offer = false,
     startIndex = 0,
   } = queryParams;
-  let url = "/api/booking/get-allBookings";
-  if (searchQuery) {
-    url += `${searchQuery}&`;
-  }
-  if (sortBy || limit || offer || startIndex) {
-    url += `sort=${sortBy}&limit=${limit}&offer=${offer}&startIndex=${startIndex}`;
-  }
-  return api.get(url);
+  let url = "/api/booking/get-allBookings" + searchQuery;
+  return api.get(url, {
+    params: {
+      sort: sortBy,
+      limit: limit,
+      offer: offer,
+      startIndex: startIndex,
+    },
+  });
 };
 
 /**
@@ -328,12 +331,10 @@ export const getBraintreeToken = () => {
   return api.get("/api/package/braintree/token");
 };
 export const makePayment = () => {
-  return api.post("/api/package/braintree/payment",
-    {
-      "amount": 100,
-      "payment_method_nonce": "fake-valid-nonce"
-    }
-  );
-}
+  return api.post("/api/package/braintree/payment", {
+    amount: 100,
+    payment_method_nonce: "fake-valid-nonce",
+  });
+};
 
 export default api;
