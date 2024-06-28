@@ -29,12 +29,12 @@ import Payments from "./Payments";
 import RatingsReviews from "./RatingsReviews";
 import History from "./History";
 import { deleteUser, logout, updateProfilePicture } from "../../http";
+import { useNotification } from "../../hooks/useNotification";
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const fileRef = useRef(null);
-    // eslint-disable-next-line no-unused-vars
     const { currentUser, loading, error } = useSelector((state) => state.user);
     const [profilePhoto, setProfilePhoto] = useState(undefined);
     const [photoPercentage, setPhotoPercentage] = useState(0);
@@ -50,14 +50,12 @@ const AdminDashboard = () => {
     useEffect(() => {
         if (currentUser !== null) {
             setFormData({
-                username: currentUser.username,
-                email: currentUser.email,
-                address: currentUser.address,
-                phone: currentUser.phone,
-                avatar: currentUser.avatar,
+                ...currentUser,
             });
         }
     }, [currentUser]);
+
+    const notify = useNotification();
 
     const handleProfilePhoto = (photo) => {
         try {
@@ -89,7 +87,7 @@ const AdminDashboard = () => {
                                 },
                             });
                             if (data?.success) {
-                                alert(data?.message);
+                                notify(data?.message, "success");
                                 setFormData({
                                     ...formData,
                                     avatar: downloadUrl,
@@ -99,9 +97,8 @@ const AdminDashboard = () => {
                                 return;
                             } else {
                                 dispatch(updateUserFailure(data?.message));
+                                notify(data?.message, "error");
                             }
-                            dispatch(updateUserFailure(data?.message));
-                            alert(data?.message);
                         }
                     );
                 }
@@ -118,11 +115,12 @@ const AdminDashboard = () => {
             const { data } = await logout();
             if (data?.success !== true) {
                 dispatch(logOutFailure(data?.message));
+                notify(data?.message, "error");
                 return;
             }
             dispatch(logOutSuccess());
             navigate("/login");
-            alert(data?.message);
+            notify(data?.message, "success");
         } catch (error) {
             console.log(error);
         }
@@ -130,8 +128,8 @@ const AdminDashboard = () => {
 
     const handleDeleteAccount = async (e) => {
         e.preventDefault();
-        const CONFIRM = confirm(
-            "Are you sure ? the account will be permenantly deleted!"
+        const CONFIRM = window.confirm(
+            "Are you sure ? the account will be permanently deleted!"
         );
         if (CONFIRM) {
             try {
@@ -139,11 +137,11 @@ const AdminDashboard = () => {
                 const { data } = await deleteUser(currentUser._id);
                 if (data?.success === false) {
                     dispatch(deleteUserAccountFailure(data?.message));
-                    alert("Something went wrong!");
+                    notify("Something went wrong!", "error");
                     return;
                 }
                 dispatch(deleteUserAccountSuccess());
-                alert(data?.message);
+                notify(data?.message, "success");
             } catch (error) {
                 console.error(error.message);
             }
@@ -236,20 +234,31 @@ const AdminDashboard = () => {
                                     Edit Profile
                                 </button>
                             </div>
-                            <div className="w-full break-all rounded-lg p-3 shadow-2xl">
-                                <p className="m-1 text-3xl font-semibold">
-                                    Hi {currentUser.username} !
+                            <div className="w-full break-all rounded-lg bg-white p-6 shadow-2xl">
+                                <p className="text-3xl font-semibold text-gray-800">
+                                    <span className=" text-gray-700">Hi </span>
+                                    {currentUser.username}!
                                 </p>
-                                <p className="text-lg font-semibold">
-                                    Email:{currentUser.email}
+                                <p className="mt-2 text-lg font-semibold text-gray-700">
+                                    Email:{" "}
+                                    <span className="font-normal text-gray-600">
+                                        {currentUser.email}
+                                    </span>
                                 </p>
-                                <p className="text-lg font-semibold">
-                                    Phone:{currentUser.phone}
+                                <p className="mt-2 text-lg font-semibold text-gray-700">
+                                    Phone:{" "}
+                                    <span className="font-normal text-gray-600">
+                                        {currentUser.phone}
+                                    </span>
                                 </p>
-                                <p className="text-lg font-semibold">
-                                    Address:{currentUser.address}
+                                <p className="mt-2 text-lg font-semibold text-gray-700">
+                                    Address:{" "}
+                                    <span className="font-normal text-gray-600">
+                                        {currentUser.address}
+                                    </span>
                                 </p>
                             </div>
+
                             <button
                                 onClick={handleDeleteAccount}
                                 className="text-red-600 hover:underline border hover:bg-red-600 transition-colors duration-500 hover:text-white border-red-600 p-2 w-full rounded-md bg-red-600/20">
@@ -261,7 +270,7 @@ const AdminDashboard = () => {
                     <div className="w-[65%] max-sm:w-full">
                         <div className="main-div">
                             <nav className="navbar w-full overflow-x-auto border-b-4 border-blue-500">
-                                <div className="flex w-full gap-2">
+                                <div className="flex w-full gap-2 hover:*:bg-blue-500">
                                     <button
                                         className={
                                             activePanelId === 1

@@ -61,7 +61,7 @@ export const loginController = async (req, res) => {
         if (!validUser) {
             return res.status(404).json({
                 success: false,
-                message: 'User not found!',
+                message: 'Email or Password is incorrect',
             })
         }
         const validPassword = bcryptjs.compareSync(password, validUser.password)

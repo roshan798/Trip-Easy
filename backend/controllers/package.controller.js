@@ -22,6 +22,7 @@ export const createPackage = async (req, res) => {
             packageImages,
         } = req.body
 
+
         if (
             !packageName ||
             !packageDescription ||
@@ -56,8 +57,9 @@ export const createPackage = async (req, res) => {
                 message: 'Provide days and nights!',
             })
         }
+        const { id } = req.user;
 
-        const newPackage = await Package.create(req.body)
+        const newPackage = await Package.create({ ...req.body, createdBy: id })
         if (newPackage) {
             return res.status(201).send({
                 success: true,
