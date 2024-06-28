@@ -19,7 +19,7 @@ const Home = () => {
     const [loadingOffers, setLoadingOffers] = useState(false);
     const [search, setSearch] = useState("");
     const showNotification = useNotification();
-    const RESULTS_PER_PAGE = 8;
+    const RESULTS_PER_PAGE = 12;
 
     const fetchPackages = async (key, setter, apiParams, setLoading) => {
         try {
