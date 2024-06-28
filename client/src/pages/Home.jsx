@@ -29,10 +29,16 @@ const Home = () => {
                 sessionStorage.setItem(key, JSON.stringify(data.packages));
                 setter(data.packages);
             } else {
-                showNotification(data?.message || "Something went wrong!", "error");
+                showNotification(
+                    data?.message || "Something went wrong!",
+                    "error"
+                );
             }
         } catch (error) {
-            showNotification(error?.message || "Something went wrong!", "error");
+            showNotification(
+                error?.message || "Something went wrong!",
+                "error"
+            );
             console.error(error);
         } finally {
             setLoading(false);
@@ -64,7 +70,11 @@ const Home = () => {
         getPackagesFromStorage(
             "offerPackages",
             setOfferPackages,
-            { sortBy: "createdAt", resultsPerPage: RESULTS_PER_PAGE, offer: true },
+            {
+                sortBy: "createdAt",
+                resultsPerPage: RESULTS_PER_PAGE,
+                offer: true,
+            },
             setLoadingOffers
         );
     }, []);
@@ -130,7 +140,9 @@ const Home = () => {
                 {/* main page */}
                 <div className="main flex flex-col gap-5 p-6 relative">
                     {/* Top Packages */}
-                    <h1 className="text-2xl font-semibold">Top Packages</h1>
+                    <h1 className="text-2xl font-bold border-b pb-4 border-gray-500">
+                        Top Packages
+                    </h1>
                     <div className="my-3 flex flex-wrap relative gap-4">
                         {loadingTop ? (
                             <Loader />
@@ -150,7 +162,9 @@ const Home = () => {
                         )}
                     </div>
                     {/* Latest Packages */}
-                    <h1 className="text-2xl font-semibold">Latest Packages</h1>
+                    <h1 className="text-2xl font-bold border-b pb-4 border-gray-500">
+                        Latest Packages
+                    </h1>
                     <div className="my-3 flex flex-wrap gap-4 relative">
                         {loadingLatest ? (
                             <Loader />
@@ -170,7 +184,9 @@ const Home = () => {
                         )}
                     </div>
                     {/* Best Offers */}
-                    <h1 className="text-2xl font-semibold">Best Offers</h1>
+                    <h1 className="text-2xl font-bold border-b pb-4 border-gray-500">
+                        Best Offers
+                    </h1>
                     <div className="my-3 flex flex-wrap gap-4 relative">
                         {loadingOffers ? (
                             <Loader />
