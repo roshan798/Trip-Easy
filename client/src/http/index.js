@@ -164,6 +164,36 @@ export const getPackages = (queryParams) => {
   });
 };
 
+export const searchPackage = (queryParams) => {
+  const {
+    sortBy,
+    offer,
+    startIndex = 0,
+    page = 0,
+    resultsPerPage = 10,
+    searchTerm
+  } = queryParams;
+  let url = "/api/package/search";
+  const params =
+  {
+    page,
+    resultsPerPage,
+    startIndex,
+  }
+  if (searchTerm) {
+    params.searchTerm = searchTerm;
+  }
+  if (offer) {
+    params.offer = offer;
+  }
+  if (sortBy) {
+    params.sortBy = sortBy
+  }
+  return api.get(url, {
+    params
+  });
+}
+
 /**
  * Create a new package.
  * @param {Object} formData - The form data containing package information.

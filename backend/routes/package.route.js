@@ -6,6 +6,7 @@ import {
     getPackageData,
     getPackages,
     updatePackage,
+    searchPackages
 } from '../controllers/package.controller.js'
 import PaymentController from '../controllers/Payment.controller.js'
 
@@ -22,6 +23,8 @@ router.delete('/delete-package/:id', requireSignIn, isAdmin, deletePackage)
 
 //get all packages
 router.get('/get-packages', getPackages)
+// search packages
+router.get("/search", searchPackages)
 
 //get single package data by id
 router.get('/get-package-data/:id', getPackageData)

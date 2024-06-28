@@ -151,6 +151,61 @@ export const getPackages = async (req, res) => {
     }
 }
 
+export const searchPackages = async (req, res) => {
+    try {
+        const searchTerm = req.query.searchTerm || '';
+
+        let offer = req.query.offer;
+        if (offer === undefined || offer === 'false') {
+            offer = { $in: [false, true] };
+        } else {
+            offer = true;
+        }
+
+        const sort = req.query.sort || 'createdAt';
+        const order = req.query.order || 'desc';
+
+        // Prepare search query
+        const querySearch = {
+            $and: [
+                { keywords: { $regex: searchTerm, $options: 'i' } },
+                { packageOffer: offer },
+            ],
+        };
+
+        // Log search term and offer for debugging
+        console.log('Search Term:', searchTerm);
+        console.log('Offer:', offer);
+
+        // Fetch all packages matching the search criteria without pagination
+        const packages = await Package.find(querySearch)
+            .sort({ [sort]: order === 'asc' ? 1 : -1 });
+
+        if (packages.length > 0) {
+            return res.status(200).send({
+                success: true,
+                packages,
+                totalResults: packages.length,
+            });
+        } else {
+            // Return 404 if no packages found matching criteria
+            return res.status(404).send({
+                success: false,
+                message: 'No Packages found',
+                totalResults: 0,
+            });
+        }
+    } catch (error) {
+        // Handle internal server error
+        console.log(error);
+        return res.status(500).send({
+            success: false,
+            message: 'Internal Server Error',
+        });
+    }
+};
+
+
 //get package data
 export const getPackageData = async (req, res) => {
     try {

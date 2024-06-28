@@ -30,22 +30,22 @@ jobs:
           git merge origin/main
           git push origin roshan
 
-      - name: Update aman
-        run: |
-          git checkout main
-          git fetch origin
-          git checkout aman
-          git pull origin aman
-          git merge origin/main
-          git push origin aman
+      # - name: Update aman
+      #   run: |
+      #     git checkout main
+      #     git fetch origin
+      #     git checkout aman
+      #     git pull origin aman
+      #     git merge origin/main
+      #     git push origin aman
 
-      - name: Update rahul
-        run: |
-          git checkout main
-          git fetch origin
-          git checkout rahul
-          git pull origin rahul
-          git merge origin/main
-          git push origin rahul
+      # - name: Update rahul
+      #   run: |
+      #     git checkout main
+      #     git fetch origin
+      #     git checkout rahul
+      #     git pull origin rahul
+      #     git merge origin/main
+      #     git push origin rahul
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
