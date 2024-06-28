@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PackageCard from "./PackageCard";
-import { getPackages } from "../http";
+import { getPackages, searchPackage } from "../http";
 
 const RESULT_PER_PAGE = 8;
 const Search = () => {
@@ -34,15 +34,15 @@ const Search = () => {
         }
 
         const fetchAllPackages = async () => {
-          setLoading(true);
-          
-          try {
+            setLoading(true);
+
+            try {
                 const queryParams = {
-                    searchTerm: urlParams.get('searchTerm'),
+                    searchTerm: urlParams.get("searchTerm"),
                     page: 1,
                     resultsPerPage: RESULT_PER_PAGE,
                 };
-                const { data } = await getPackages(queryParams);
+                const { data } = await searchPackage(queryParams);
 
                 setAllPackages(data?.packages);
                 setTotalResults(data?.totalResults);
