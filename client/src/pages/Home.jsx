@@ -131,7 +131,7 @@ const Home = () => {
                 <div className="main flex flex-col gap-5 p-6 relative">
                     {/* Top Packages */}
                     <h1 className="text-2xl font-semibold">Top Packages</h1>
-                    <div className="my-3 flex flex-wrap gap-2 relative">
+                    <div className="my-3 flex flex-wrap relative">
                         {loadingTop ? (
                             <Loader />
                         ) : topPackages.length === 0 ? (
