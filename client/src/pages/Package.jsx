@@ -280,7 +280,7 @@ const Package = () => {
                                     </span>
                                 </>
                             ) : (
-                                <span>${packageData?.packagePrice}</span>
+                                <span>&#8377;{packageData?.packagePrice}</span>
                             )}
                         </p>
                         {/* price */}
