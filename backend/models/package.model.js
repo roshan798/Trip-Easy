@@ -64,7 +64,7 @@ const packageSchema = new mongoose.Schema(
         },
         keywords: {
             type: String,
-            required: true,
+            required: false,
         },
     },
     { timestamps: true }
