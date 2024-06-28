@@ -84,10 +84,10 @@ const Home = () => {
             <div className="flex w-full flex-col">
                 <div className="backaground_image w-full"></div>
                 <div className="top-part flex w-full flex-col gap-4">
-                    <div className="mt-4 flex w-full items-center justify-center">
+                    <div className="mt-4 flex w-full items-center justify-center px-3 sm:p-0">
                         <input
                             type="text"
-                            className="w-[230px] rounded-s-lg p-3 shadow shadow-gray-800 placeholder:text-gray-200 bg-white/30 font-semibold text-white outline-none sm:w-2/5"
+                            className="w-full rounded-s-lg p-3 shadow shadow-gray-800 placeholder:text-gray-200 bg-white/30 font-semibold text-white outline-none sm:w-2/5"
                             placeholder="Search by Destination, Activity, or Package Name"
                             value={search}
                             onChange={(e) => {

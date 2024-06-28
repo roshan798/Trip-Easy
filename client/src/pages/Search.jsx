@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import PackageCard from "./PackageCard";
 import { getPackages, searchPackage } from "../http";
 
 const RESULT_PER_PAGE = 8;
+
 const Search = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [sideBarSearchData, setSideBarSearchData] = useState({
         searchTerm: "",
         offer: false,
@@ -115,7 +117,7 @@ const Search = () => {
 
     return (
         <div className="flex flex-col md:flex-row">
-            <div className="border-b-2 md:h-screen md:sticky top-0 left-0 p-7 md:min-h-screen md:border-r-2">
+            <div className="border-b-2 md:h-screen md:sticky top-0 left-0 p-7 md:min-h-screen md:border-r-2 md:w-1/3 bg-gray-100">
                 <form
                     className="flex flex-col gap-8"
                     onSubmit={handleSubmit}>
@@ -132,13 +134,13 @@ const Search = () => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex items-center gap-2">
                         <label className="font-semibold">Type:</label>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 items-center">
                             <input
                                 type="checkbox"
                                 id="offer"
-                                className="w-5"
+                                className="w-5 h-5"
                                 checked={sideBarSearchData.offer}
                                 onChange={handleChange}
                             />
@@ -151,7 +153,7 @@ const Search = () => {
                             onChange={handleChange}
                             defaultValue={"created_at_desc"}
                             id="sort_order"
-                            className="rounded-lg border p-3">
+                            className="rounded-lg border p-3 w-full">
                             <option value="packagePrice_desc">
                                 Price high to low
                             </option>
@@ -173,7 +175,6 @@ const Search = () => {
                     </button>
                 </form>
             </div>
-            {/* ------------------------------------------------------------------------------- */}
             <div className="flex-1">
                 <h1 className="mt-5 border-b p-3 text-xl font-semibold text-slate-700">
                     Package Results:

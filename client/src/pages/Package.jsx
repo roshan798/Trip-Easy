@@ -253,7 +253,7 @@ const Package = () => {
                             }}
                         />
                     </div>
-                    <div className="flex w-full max-w-4xl flex-col gap-2 p-5">
+                    <div className="flex w-full max-w-4xl flex-col gap-2 p-5 ">
                         <p className="text-2xl font-bold capitalize">
                             {packageData?.packageName}
                         </p>
@@ -394,7 +394,7 @@ const Package = () => {
                                     }
                                 }}
                                 className="w-full rounded bg-green-700 p-3 text-white hover:opacity-95 sm:w-[200px]">
-                                Book
+                                Book Now
                             </button>
                         </div>
                         {/* Description */}

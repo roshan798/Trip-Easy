@@ -21,14 +21,14 @@ const Header = () => {
                 </Link>
 
                 <ul className="flex list-none flex-wrap items-center justify-end gap-4 font-semibold text-white">
-                    <li className=" bg-gray-500/20 hover:bg-gray-500/50 cursor-pointer rounded transition-all *:text-black duration-150 hover:scale-105 hover:underline text-black">
+                    <li className="hidden sm:block bg-gray-500/20 hover:bg-gray-500/50 cursor-pointer rounded transition-all *:text-black duration-150 hover:scale-105 hover:underline text-black">
                         <Link
                             className="px-4 py-2 block"
                             to={`/`}>
                             Home
                         </Link>
                     </li>
-                    <li className=" bg-gray-500/20 hover:bg-gray-500/50 cursor-pointer rounded transition-all duration-150 hover:scale-105 hover:underline text-black">
+                    <li className="hidden sm:block bg-gray-500/20 hover:bg-gray-500/50 cursor-pointer rounded transition-all duration-150 hover:scale-105 hover:underline text-black">
                         <Link
                             className="px-4 py-2 block"
                             to={`/search`}>

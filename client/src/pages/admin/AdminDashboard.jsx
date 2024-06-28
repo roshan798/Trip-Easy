@@ -164,7 +164,7 @@ const AdminDashboard = () => {
                                         formData.avatar
                                     }
                                     alt="Profile photo"
-                                    className="cursor-pointer max-h-64 min-h-52 w-64 rounded-lg"
+                                    className="p-1 max-h-64 min-h-52 w-64 aspect-square border-2 border-blue-600 rounded-full"
                                     onClick={() => fileRef.current.click()}
                                     onMouseOver={() => {
                                         document
