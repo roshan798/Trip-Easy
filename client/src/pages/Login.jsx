@@ -13,10 +13,11 @@ const Login = () => {
     const showNotification = useNotification();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({
+    const defaultFormData = {
         email: "",
         password: "",
-    });
+    };
+    const [formData, setFormData] = useState(defaultFormData);
     const [loginState, setLoginState] = useState({
         loading: false,
         error: null,
@@ -43,13 +44,13 @@ const Login = () => {
                 showNotification(data?.message, "error");
             }
         } catch (error) {
-            showNotification(error?.message, "error");
+            showNotification(
+                error?.response?.data?.message || error?.message,
+                "error"
+            );
             console.log(error);
         } finally {
-            setFormData({
-                email: "",
-                password: "",
-            });
+            setFormData(defaultFormData);
             setLoginState({ ...loginState, loading: false });
         }
     };
@@ -80,6 +81,7 @@ const Login = () => {
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         onChange={handleChange}
                         required
+                        value={formData.email}
                     />
                 </div>
                 <div className="mb-6">
@@ -93,6 +95,7 @@ const Login = () => {
                         id="password"
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         onChange={handleChange}
+                        value={formData.password}
                         required
                     />
                 </div>

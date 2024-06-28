@@ -62,6 +62,10 @@ const packageSchema = new mongoose.Schema(
             type: Array,
             required: true,
         },
+        createdBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        },
         keywords: {
             type: String,
             required: false,
