@@ -136,27 +136,31 @@ export const getPackage = (params) => {
  */
 export const getPackages = (queryParams) => {
   const {
-    searchQuery = "",
-    sortBy = "packageRating",
-    limit = 1000,
-    offer = false,
+    sortBy,
+    offer,
     startIndex = 0,
     page = 0,
     resultsPerPage = 10,
+    searchTerm
   } = queryParams;
-  let url = "/api/package/get-packages?";
-  if (searchQuery) {
-    url += `${searchQuery}&`;
+  let url = "/api/package/get-packages";
+  const params =
+  {
+    page,
+    resultsPerPage,
+    startIndex,
+  }
+  if (searchTerm) {
+    params.searchTerm = searchTerm;
+  }
+  if (offer) {
+    params.offer = offer;
+  }
+  if (sortBy) {
+    params.sortBy = sortBy
   }
   return api.get(url, {
-    params: {
-      page,
-      resultsPerPage,
-      sortBy,
-      limit,
-      offer,
-      startIndex,
-    },
+    params
   });
 };
 
