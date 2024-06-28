@@ -20,92 +20,53 @@ const Home = () => {
     const [search, setSearch] = useState("");
     const showNotification = useNotification();
     const RESULTS_PER_PAGE = 8;
-    const getTopPackages = async () => {
+
+    const fetchPackages = async (key, setter, apiParams, setLoading) => {
         try {
-            setLoadingTop(true);
-            const { data } = await getPackages({
-                sortBy: "packageRating",
-                resultsPerPage: RESULTS_PER_PAGE,
-            });
+            setLoading(true);
+            const { data } = await getPackages(apiParams);
             if (data?.success) {
-                setTopPackages(data?.packages);
+                sessionStorage.setItem(key, JSON.stringify(data.packages));
+                setter(data.packages);
             } else {
-                showNotification(
-                    data?.message || "Something went wrong!",
-                    "error"
-                );
+                showNotification(data?.message || "Something went wrong!", "error");
             }
         } catch (error) {
-            showNotification(
-                error?.message || "Something went wrong!",
-                "error"
-            );
+            showNotification(error?.message || "Something went wrong!", "error");
             console.error(error);
         } finally {
-            setLoadingTop(false);
+            setLoading(false);
         }
     };
 
-    const getLatestPackages = async () => {
-        try {
-            setLoadingLatest(true);
-            const { data } = await getPackages({
-                sortBy: "createdAt",
-                resultsPerPage: RESULTS_PER_PAGE,
-            });
-            if (data?.success) {
-                setLatestPackages(data?.packages);
-            } else {
-                showNotification(
-                    data?.message || "Something went wrong!",
-                    "error"
-                );
-            }
-        } catch (error) {
-            showNotification(
-                error?.message || "Something went wrong!",
-                "error"
-            );
-            console.error(error);
-        } finally {
-            setLoadingLatest(false);
-        }
-    };
-
-    const getOfferPackages = async () => {
-        try {
-            setLoadingOffers(true);
-            const { data } = await getPackages({
-                sortBy: "createdAt",
-                resultsPerPage: RESULTS_PER_PAGE,
-                offer: true,
-            });
-            if (data?.success) {
-                setOfferPackages(data?.packages);
-            } else {
-                showNotification(
-                    data?.message || "Something went wrong!",
-                    "error"
-                );
-            }
-        } catch (error) {
-            showNotification(
-                error?.message || "Something went wrong!",
-                "error"
-            );
-            console.error(error);
-        } finally {
-            setLoadingOffers(false);
+    const getPackagesFromStorage = (key, setter, apiParams, setLoading) => {
+        const storedPackages = sessionStorage.getItem(key);
+        if (storedPackages) {
+            setter(JSON.parse(storedPackages));
+        } else {
+            fetchPackages(key, setter, apiParams, setLoading);
         }
     };
 
     useEffect(() => {
-        const helper = () => {
-            getTopPackages();
-            getLatestPackages();
-            getOfferPackages();
-        };
-        helper();
+        getPackagesFromStorage(
+            "topPackages",
+            setTopPackages,
+            { sortBy: "packageRating", resultsPerPage: RESULTS_PER_PAGE },
+            setLoadingTop
+        );
+        getPackagesFromStorage(
+            "latestPackages",
+            setLatestPackages,
+            { sortBy: "createdAt", resultsPerPage: RESULTS_PER_PAGE },
+            setLoadingLatest
+        );
+        getPackagesFromStorage(
+            "offerPackages",
+            setOfferPackages,
+            { sortBy: "createdAt", resultsPerPage: RESULTS_PER_PAGE, offer: true },
+            setLoadingOffers
+        );
     }, []);
 
     return (
