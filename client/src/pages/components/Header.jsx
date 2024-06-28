@@ -8,7 +8,7 @@ const Header = () => {
     const { currentUser } = useSelector((state) => state.user);
     return (
         <>
-            <div className="px-4 flex items-center justify-between bg-slate-100 ">
+            <div className="px-4 flex items-center justify-between bg-slate-100 py-2 ">
                 <Link
                     to="/"
                     className="">
