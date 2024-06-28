@@ -226,7 +226,7 @@ const Package = () => {
                         {packageData?.packageImages.map((imageUrl, i) => (
                             <SwiperSlide key={i}>
                                 <div
-                                    className="h-[400px] border-red-500 border"
+                                    className="h-[400px]"
                                     style={{
                                         backgroundImage: `url('${imageUrl}')`,
                                         backgroundPosition: "center",

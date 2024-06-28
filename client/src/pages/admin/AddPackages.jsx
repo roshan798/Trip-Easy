@@ -140,13 +140,10 @@ const AddPackages = () => {
         try {
             setLoading(true);
             setError(false);
-
             const { data } = await createPackage(formData);
             if (data?.success === false) {
                 setError(data?.message);
-                setLoading(false);
             }
-            setLoading(false);
             setError(false);
             alert(data?.message);
             setFormData({
@@ -167,6 +164,8 @@ const AddPackages = () => {
             setImages([]);
         } catch (err) {
             console.log(err);
+        } finally {
+            setLoading(false);
         }
     };
 
